@@ -58,32 +58,25 @@ arrayRow = 0;
 %Loop through image to enter repetitions of colors...
 for j = 1:1:imSize(2)
     for i = 1:1:imSize(1)
-        %Same color as previous:
-        if(previousColor == img1_n(i,j))
-            array(arrayRow, 3) = i;
-            array(arrayRow, 4) = array(arrayRow,4)+1;
-        %New color:
-        else
-            arrayRow = arrayRow+1;
-            array(arrayRow, 1) = img1_n(i,j);
-            array(arrayRow, 2) = i;
-            array(arrayRow, 3) = i;
-            array(arrayRow, 4) = array(arrayRow,4)+1;
-            previousColor = img1_n(i,j);
+        switch n
+            case 1
+                %Counting black pixels in a row
+            case 2
+                %Counting white pixels in a row. If != nr of black pixels
+                %go back to case 1 and count new black pixels
+                %(egentligen 0.5-1.5 * nr of black pixels)
+            case 3
+                %Counting black pixels in a row, if != 3*nr of black/white
+                %pixels from case 1 & 2, go back to case 1
+                %(egentligen 2.5-3.5 * nr of black/white pixels
+            case 4
+                %Counting white pixels in a row, if != nr of pixels from
+                %case 1/2
+                %(egentligen 0.5-1.5 * nr of black pixels)
+            case 5
+                %Counting black pixels in a row, if != nr of pixels from
+                %case 1/2/4
+                %(egentligen 0.5-1.5 * nr of black pixels)
         end
     end
-end
-
-%find the 1:1:3:1:1 relationship
-%%Loop through and compare array(n, 4)..
-nr = 0;
-n = 0;nPrev = 0;
-pattern = zeros(5);
-compare = [1;1;3;1;1];
-
-pos = 1;
-for k = 1:1:arraySize
-    temp = array([(0+k):(4+k)],3);
-    %C = intersect(temp, compare);
-    
 end
