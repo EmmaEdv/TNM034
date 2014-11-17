@@ -29,73 +29,85 @@ startX = 0;
 startY = 0;
 
 %Loop through image to enter repetitions of colors...
-for j = 1:20:imSize(2)
-    for i = 1:20:imSize(1)
-        switch status
-            case 0
-                if(img1_n(i,j) == 1)
+%for j = 1:20:imSize(2)
+%    for i = 1:20:imSize(1)
+
+i=1;
+j=1;
+direction = 0;
+
+%%%while i<=imSize(1) && j<=imSize(2)
+    switch status
+        case 0
+            if(img1_n(i,j) == 1)
+                blackCounter = 0;
+                status = 1;
+            else 
+                nextPixel(i,j,imSize,direction);
+            end
+        case 1 
+            if(img1_n(i,j) == 1)
+                blackCounter = blackCounter + 1;
+                nextPixel(i,j,imSize,direction);
+            else
+                startX = i;
+                startY = j;
+                whiteCounter = 0;
+                status = 2;
+            end
+
+        case 2
+            if(img1_n(i,j) == 0)
+                whiteCounter = whiteCounter + 1;
+                nextPixel(i,j,imSize,direction);
+            else
+                if(whiteCounter == blackCounter)
+                    centerCounter = 0;
+                    status = 3;
+                else
                     blackCounter = 0;
-                    status = 1;
+                    status = 0;
                 end
-            case 1 
-                if(img1_n(i,j) == 1)
-                    blackCounter = blackCounter + 1;
-                else
-                    startX = i;
-                    startY = j;
+            end
+        case 3
+            if(img1_n(i,j) == 1)
+                centerCounter = centerCounter + 1;
+                nextPixel(i,j,imSize,direction);
+            else
+                if(centerCounter == 3*blackCounter)
                     whiteCounter = 0;
-                    status = 2;
-                end
-                
-            case 2
-                if(img1_n(i,j) == 0)
-                    whiteCounter = whiteCounter + 1;
+                    status = 4;
                 else
-                    if(whiteCounter == blackCounter)
-                        centerCounter = 0;
-                        status = 3;
-                    else
-                        blackCounter = 0;
-                        status = 0;
-                        
-                    end
+                    blackCounter = 0;
+                    status = 0;
                 end
-            case 3
-                if(img1_n(i,j) == 1)
-                    centerCounter = centerCounter + 1;
+            end
+        case 4
+            if(img1_n(i,j) == 0)
+                whiteCounter = whiteCounter + 1;
+                nextPixel(i,j,imSize,direction);
+            else
+                if(whiteCounter == blackCounter)
+                    blackCounter = 0;
+                    status = 5;
                 else
-                    if(centerCounter == 3*blackCounter)
-                        whiteCounter = 0;
-                        status = 4;
-                    else
-                        blackCounter = 0;
-                        status = 0;
-                    end
+                    blackCounter = 0;
+                    status = 0;
                 end
-            case 4
-                if(img1_n(i,j) == 0)
-                    whiteCounter = whiteCounter + 1;
+            end
+        case 5
+            if(img1_n(i,j) == 1)
+                blackCounter = blackCounter + 1;
+                nextPixel(i,j,imSize,direction);
+            else
+                if(blackCounter == whiteCounter)
+                    whiteCounter = 0;
+                    status = 6;
                 else
-                    if(whiteCounter == blackCounter)
-                        blackCounter = 0;
-                        status = 5;
-                    else
-                        blackCounter = 0;
-                        status = 0;
-                    end
+                    status = 0;
                 end
-            case 5
-                if(img1_n(i,j) == 1)
-                    blackCounter = blackCounter + 1;
-                else
-                    if(blackCounter == whiteCounter)
-                        whiteCounter = 0;
-                        status = 6;
-                    else
-                        status = 0;
-                    end
-                end
-            case 6
+            end
+        case 6
 %                 if(img1_n(i,j) == 0)
 %                     whiteCounter = whiteCounter + 1;
 %                 else
@@ -108,14 +120,14 @@ for j = 1:20:imSize(2)
 %                     end
 %                 end
 %             case 7
-                disp('Fiducial!')
-                disp(i)
-                disp(j)
-                disp(whiteCounter);
-                disp(blackCounter);
-                status = 0;
-                figure
-                imshow(img1_n((startX:i),(startY:j)));
-        end
+            disp('Fiducial!')
+            disp(i)
+            disp(j)
+            disp(whiteCounter);
+            disp(blackCounter);
+            status = 0;
+            
+            figure
+            imshow(img1_n((startX:i),(startY:j)));
     end
 end
