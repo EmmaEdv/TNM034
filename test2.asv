@@ -147,7 +147,7 @@ blackCounter2 = 0;
 whiteCounter2 = 0;
 
 
-horizontal = zeros(1, 7);
+horizontal = zeros(1, 6);
 m=1;
 %Horizontal scanning
 for i = 1:1:imSize(1)
@@ -219,15 +219,15 @@ for i = 1:1:imSize(1)
             case 6
                 status = 0;
                 hold on
-                horizontal = [horizontal; zeros(1,7)];
+                horizon
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
                  %Draw line
                  line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)]);
 %                 %Calculate k and b of equation y=kx+b
 %                 k = slope(horizontal(m,1:4));
 %                 b = intercept(horizontal(m, 1:4), k);
-                horizontal(m,6) = k;
-                horizontal(m,7) = b;
+                horizontal(m,5) = k;
+                horizontal(m,6) = b;
                 
                 midX = startX + (stopX-startX)/2;
                 horizontal(n,5) = midX;
