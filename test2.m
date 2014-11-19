@@ -254,25 +254,35 @@ calcCX = 0;
 calcCY = 0;
 nrOfCP = 0;
 row = 1;
+startY = sortedVertical(1,5);
+slutY = sortedVertical(1,5);
+startX = sortedVertical(1,4);
+slutX = sortedVertical(1,4);
 centerPoint = zeros(1,2);
 centerPoint2 = zeros(1,2);
 centerPoint3 = zeros(1,2);
 
 for k = 1:length(1)
-    if (sortedVertical(k,2) >= (tempX+1) && sortedVertical(k,2) <= (tempX+tolX) && sortedVertical(k,5) >= (tempY-tolY) && sortedVertical(k,5) <= (tempY+tolY))
-        line([tempX, sortedVertical(k,2)], [tempY, sortedVertical(k,5)], 'color', [1.0,0.25,0.80]);
-        tempX = sortedVertical(k,2);
-        tempY = sortedVertical(k,5);
-        nrOfCP = nrOfCP + 1;
-        centerPoint(row,1) = centerPoint(row,1) + tempX;
-        centerPoint(row,2) = centerPoint(row,2) + tempY;
+    if (sortedVertical(k,2) >= (startX+1) && sortedVertical(k,2) <= (startX+tolX) && sortedVertical(k,5) >= (startY-tolY) && sortedVertical(k,5) <= (startY+tolY))
+%    if (sortedVertical(k,2) >= (tempX+1) && sortedVertical(k,2) <= (tempX+tolX) && sortedVertical(k,5) >= (tempY-tolY) && sortedVertical(k,5) <= (tempY+tolY))
+%         line([tempX, sortedVertical(k,2)], [tempY, sortedVertical(k,5)], 'color', [1.0,0.25,0.80]);
+%         tempX = sortedVertical(k,2);
+%         tempY = sortedVertical(k,5);
+%         nrOfCP = nrOfCP + 1;
+%         centerPoint(row,1) = centerPoint(row,1) + tempX;
+%         centerPoint(row,2) = centerPoint(row,2) + tempY;
+        slutY = sortedVertical(k,5);
+        slutX = sortedVertical(k,4);
     else
+        line([startX, slutX], [startY, slutY], 'color', [1.0,0.25,0.80]);
+        startY = sortedVertical(k,5);
+        startX = sortedVertical(k,4);
         %centerPoint(row,1) = centerPoint(row, 1)/nrOfCP;
         %centerPoint(row,2) = centerPoint(row, 2)/nrOfCP;
-        tempX = sortedVertical(k,2);
-        tempY = sortedVertical(k,5);
-        nrOfCP = 0;
-        row = row+1;
+%         tempX = sortedVertical(k,2);
+%         tempY = sortedVertical(k,5);
+%         nrOfCP = 0;
+%         row = row+1;
         %N?r ska detta ske?
         centerPoint = [centerPoint; zeros(1,2)];
     end
