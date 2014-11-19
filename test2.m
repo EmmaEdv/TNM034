@@ -221,11 +221,11 @@ for i = 1:1:imSize(1)
                 hold on
                 horizontal = [horizontal; zeros(1,7)];
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
-                 %Draw line
-                 line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)]);
-%                 %Calculate k and b of equation y=kx+b
-%                 k = slope(horizontal(m,1:4));
-%                 b = intercept(horizontal(m, 1:4), k);
+                %Draw line
+                line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)]);
+%               %Calculate k and b of equation y=kx+b
+%               k = slope(horizontal(m,1:4));
+%               b = intercept(horizontal(m, 1:4), k);
                 horizontal(m,6) = k;
                 horizontal(m,7) = b;
                 
@@ -240,25 +240,41 @@ for i = 1:1:imSize(1)
     end
 end
 
-%TAKES LONG TIME AND IS WRONG
-% vSize = size(vertical);
-% hSize = size(horizontal);
-% intersect = zeros(100, 3);
-% for i = 1:vSize(1)
-%     for j = 1:hSize(1)
-%         xintersect = (vertical(i,6)-horizontal(j,6))/(horizontal(j,5)-vertical(i,5));
-%         yintersect = horizontal(j,5)*xintersect + horizontal(j,6);
-%         hold on
-%         plot(xintersect, yintersect, '*y');
-%     end
-% end
-        
-% %FIX DIS!!!!!
 
-% xintersect = (b2-b1)/(m1-m2)
-% yintersect = m1*xintersect + b1
-% 
-% 
-% plot(xintersect,yintersect,'m*','markersize',8)
-% legend({'line1','line2','intersection'},'Location','West')
-% hold off
+
+sortedVertical = sortrows(vertical , [5 4]); 
+
+length = size(sortedVertical);
+tempX = sortedVertical(2,2);
+tempY = sortedVertical(2,5);
+tolX = 12;
+tolY = 20;
+
+calcCX = 0;
+calcCY = 0;
+nrOfCP = 0;
+row = 1;
+centerPoint = zeros(1,2);
+centerPoint2 = zeros(1,2);
+centerPoint3 = zeros(1,2);
+
+for k = 1:length(1)
+    if (sortedVertical(k,2) >= (tempX+1) && sortedVertical(k,2) <= (tempX+tolX) && sortedVertical(k,5) >= (tempY-tolY) && sortedVertical(k,5) <= (tempY+tolY))
+        line([tempX, sortedVertical(k,2)], [tempY, sortedVertical(k,5)], 'color', [1.0,0.25,0.80]);
+        tempX = sortedVertical(k,2);
+        tempY = sortedVertical(k,5);
+        nrOfCP = nrOfCP + 1;
+        centerPoint(row,1) = centerPoint(row,1) + tempX;
+        centerPoint(row,2) = centerPoint(row,2) + tempY;
+    else
+        %centerPoint(row,1) = centerPoint(row, 1)/nrOfCP;
+        %centerPoint(row,2) = centerPoint(row, 2)/nrOfCP;
+        tempX = sortedVertical(k,2);
+        tempY = sortedVertical(k,5);
+        nrOfCP = 0;
+        row = row+1;
+        %N?r ska detta ske?
+        centerPoint = [centerPoint; zeros(1,2)];
+    end
+    
+end
