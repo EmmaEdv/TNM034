@@ -76,13 +76,6 @@ for j = 1:1:imSize(2)
             case 3
                 if(img1_n(i,j) == 0)
                     centerCounter = centerCounter + 1;
-                    if(j==100)
-                        disp('start test')
-                        disp(i)
-                        disp(centerCounter)
-                        disp(blackCounter)
-                        disp('slut test')
-                    end
                 else
                     if(centerCounter >= 2.5*blackCounter && centerCounter <= 4*blackCounter)
                         whiteCounter = 1;
@@ -145,7 +138,7 @@ blackCounter = 0;
 whiteCounter = 0;
 blackCounter2 = 0;
 whiteCounter2 = 0;
-
+status = 0;
 
 horizontal = zeros(1, 7);
 m=1;
@@ -224,8 +217,8 @@ for i = 1:1:imSize(1)
                 %Draw line
                 line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)]);
 %               %Calculate k and b of equation y=kx+b
-%               k = slope(horizontal(m,1:4));
-%               b = intercept(horizontal(m, 1:4), k);
+                k = slope(horizontal(m,1:4));
+                b = intercept(horizontal(m, 1:4), k);
                 horizontal(m,6) = k;
                 horizontal(m,7) = b;
                 
@@ -241,7 +234,7 @@ for i = 1:1:imSize(1)
 end
 
 
-
+sortedHorizontal = sortrows(horizontal , [4 3]); 
 sortedVertical = sortrows(vertical , [5 4]); 
 
 length = size(sortedVertical);
