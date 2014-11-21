@@ -43,7 +43,8 @@ startY = 0;
 i = 1;
 j = 1;
 prevStart = 1;
-prevStartY = 1;   
+prevStartY = 1;
+verHor = 1;
 while j < imSize(2)
     while i <= imSize(1)
         switch status
@@ -53,12 +54,12 @@ while j < imSize(2)
                 if(img1_n(i,j) == 1)
                     status = 0;
                 else
-                    [i,j] = increase(prevStart,prevStartY,imSize);
+                    [i,j] = increase(prevStart,prevStartY,imSize,verHor);
                 end
             case 0
                 prevStart = i;
                 prevStartY = j;
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 if(img1_n(i,j) == 0)
                     blackCounter = 1;
                     status = 1;
@@ -67,7 +68,7 @@ while j < imSize(2)
                 end
                 
             case 1 
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 if(img1_n(i,j) == 0)
                     blackCounter = blackCounter + 1;
                     
@@ -76,7 +77,7 @@ while j < imSize(2)
                     status = 2;
                 end
             case 2
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
                     
@@ -85,12 +86,12 @@ while j < imSize(2)
                         centerCounter = 1;
                         status = 3;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize,verHor);
                         status = -1;
                     end
                 end
             case 3
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 if(img1_n(i,j) == 0)
                     centerCounter = centerCounter + 1;
                 else
@@ -98,17 +99,17 @@ while j < imSize(2)
                         whiteCounter = 1;
                         status = 4;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize,verHor);
                         status = -1;
                     end
                 end
             case 4
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 
-%                 if(i >= 115 && i<=132 && j >= 145 && j <= 230 && status>2)
-%                     disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
-%                     disp(['blackCounter: ', num2str(blackCounter), ' whiteCounter: ', num2str(whiteCounter), ' color: ', num2str(img1_n(i,j))])
-%                 end
+                if(i >= 115 && i<=132 && j >= 145 && j <= 230 && status>2)
+                    disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
+                    disp(['blackCounter: ', num2str(blackCounter), ' whiteCounter: ', num2str(whiteCounter), ' color: ', num2str(img1_n(i,j))])
+                end
 
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
@@ -117,12 +118,12 @@ while j < imSize(2)
                         blackCounter = 1;
                         status = 5;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize,verHor);
                         status = -1;
                     end
                 end
             case 5
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 if(img1_n(i,j) == 0)
                     blackCounter = blackCounter + 1;
                     stopY = i;
@@ -132,12 +133,12 @@ while j < imSize(2)
                         whiteCounter = 1;
                         status = 6;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize,verHor);
                         status = -1;
                     end
                 end
             case 6
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 status = -1;
                 whiteCounter = 1;
                 hold on
@@ -165,7 +166,7 @@ while j < imSize(2)
     if(i == imSize(1) && j == imSize(2))
             break;
         end
-    %i = 0;
+    i = 0;
 end
 
 
@@ -181,6 +182,7 @@ prevStart = 1;
 prevStartY = 1;  
 horizontal = zeros(1, 7);
 m=1;
+verHor = 0;
 %Horizontal scanning
 while i < imSize(1)
     while j <= imSize(2)
@@ -191,12 +193,12 @@ while i < imSize(1)
                 if(img1_n(i,j) == 1)
                     status = 0;
                 else
-                    [i,j] = increase(prevStart,prevStartY,imSize);
+                    [i,j] = increase(prevStart,prevStartY,imSize, verHor);
                 end
             case 0
                 prevStart = i;
                 prevStartY = j;
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize, verHor);
                 if(img1_n(i,j) == 0)
                     blackCounter = 1;
                     status = 1;
@@ -205,7 +207,7 @@ while i < imSize(1)
                 end
                 
             case 1 
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize, verHor);
                 if(img1_n(i,j) == 0)
                     blackCounter = blackCounter + 1;
                     
@@ -214,7 +216,7 @@ while i < imSize(1)
                     status = 2;
                 end
             case 2
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize,verHor);
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
                     
@@ -223,12 +225,12 @@ while i < imSize(1)
                         centerCounter = 1;
                         status = 3;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize, verHor);
                         status = -1;
                     end
                 end
             case 3
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize, verHor);
                 if(img1_n(i,j) == 0)
                     centerCounter = centerCounter + 1;
                 else
@@ -236,17 +238,17 @@ while i < imSize(1)
                         whiteCounter = 1;
                         status = 4;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize, verHor);
                         status = -1;
                     end
                 end
             case 4
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize, verHor);
                 
-%                 if(i >= 115 && i<=132 && j >= 145 && j <= 230 && status>2)
-%                     disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
-%                     disp(['blackCounter: ', num2str(blackCounter), ' whiteCounter: ', num2str(whiteCounter), ' color: ', num2str(img1_n(i,j))])
-%                 end
+                if(i >= 115 && i<=132 && j >= 145 && j <= 230 && status>2)
+                    disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
+                    disp(['blackCounter: ', num2str(blackCounter), ' whiteCounter: ', num2str(whiteCounter), ' color: ', num2str(img1_n(i,j))])
+                end
 
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
@@ -255,12 +257,12 @@ while i < imSize(1)
                         blackCounter = 1;
                         status = 5;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize, verHor);
                         status = -1;
                     end
                 end
             case 5
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize, verHor);
                 if(img1_n(i,j) == 0)
                     blackCounter = blackCounter + 1;
                     stopY = i;
@@ -270,29 +272,29 @@ while i < imSize(1)
                         whiteCounter = 1;
                         status = 6;
                     else
-                        [i,j] = increase(prevStart,prevStartY,imSize);
+                        [i,j] = increase(prevStart,prevStartY,imSize, verHor);
                         status = -1;
                     end
                 end
             case 6
-                [i,j] = increase(i,j,imSize);
+                [i,j] = increase(i,j,imSize, verHor);
                 status = -1;
                 whiteCounter = 1;
                 hold on
-                vertical = [vertical; zeros(1,7)];
-                vertical(n,1:4) = [startY, startX, stopY, stopX];
+                horizontal = [horizontal; zeros(1,7)];
+                horizontal(m,1:4) = [startY, startX, stopY, stopX];
                 %Draw lines:
-                line([vertical(n,2), vertical(n,4)], [vertical(n,1), vertical(n,3)], 'color', [0.0,0.5,0.0]);
+                line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)], 'color', [0.0,0.5,0.0]);
                 %Calculate k and b of equation y=kx+b
-                k = slope(vertical(n,1:4));
-                b = intercept(vertical(n, 1:4), k);
-                vertical(n,6) = k;
-                vertical(n,7) = b;
+                k = slope(horizontal(m,1:4));
+                b = intercept(horizontal(m, 1:4), k);
+                horizontal(m,6) = k;
+                horizontal(m,7) = b;
                 
                 midY = startY + (stopY-startY)/2;
-                vertical(n,5) = midY;
+                horizontal(m,5) = midY;
                 plot(startX, midY, '+w');
-                n = n+1;
+                m = m+1;
                 plot(startX, startY, '+g')
                 plot(stopX, stopY, '+r')
         end
@@ -301,7 +303,7 @@ while i < imSize(1)
         end
     end
     if(i == imSize(1) && j == imSize(2))
-            break;
-        end
+        break;
+    end
     %i = 0;
 end
