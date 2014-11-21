@@ -31,7 +31,7 @@ intercept = @(line,m) line(1) - m*line(3);
 %1000 ?R KANSKE INTE J?TTEBRA V?RDE EGENTLIGEN...
 vertical = zeros(1, 7);
 n = 1;
-status = 0;
+status = -1;
 blackCounter = 0;
 whiteCounter = 0;
 
@@ -42,27 +42,45 @@ startY = 0;
 %vit = 1
 %Vertical scanning
 %Loop through image to enter repetitions of colors...
-i = 0;
-%JOHAN, VI MÅSTE ANVÄNDA WHILE, ANNARS FÖRLORAR VI MASSOR AV INFORMATION..
-%DÅ KAN VI GÅ TILLBAKA TILL DEN PIXEL SOM ÄR #1 FAST FALSK, OCH STEGA ETT
-%STEG FRAM ISTÄLLET FÖR ATT LOOPA TILLS DEN INSER ATT DET INTE ÄR ETT
-%FIDUCIAL MARK OCH KOLLA NÄSTA. AAH, DU FATTAR?
-for j = 1:1:imSize(2)    
-    while i < imSize(1)
+i = 1;
+j = 1;
+prevStart = 1;
+%JOHAN, VI M?STE ANV?NDA WHILE, ANNARS F?RLORAR VI MASSOR AV INFORMATION..
+%D? KAN VI G? TILLBAKA TILL DEN PIXEL SOM ?R #1 FAST FALSK, OCH STEGA ETT
+%STEG FRAM IST?LLET F?R ATT LOOPA TILLS DEN INSER ATT DET INTE ?R ETT
+%FIDUCIAL MARK OCH KOLLA N?STA. AAH, DU FATTAR?
+%for j = 1:1:imSize(2)    
+while j < imSize(2)
+    while i <= imSize(1)
 %     for i = 1:1:imSize(1)
+        %disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
         switch status
+            case -1
+                prevStart = i;
+                if(img1_n(i,j) == 1)
+                    %[i,j] = increase(i,j,imSize);
+                    status = 0;
+                else
+                    [i,j] = increase(prevStart,j,imSize);
+                end
             case 0
-                
-                i=i+1;
+                prevStart = i;
+                [i,j] = increase(i,j,imSize);
+                %disp(['j: ', num2str(j)]);
+                %disp(['i: ', num2str(i)]);
+                %disp(img1_n(i,j));
                 if(img1_n(i,j) == 0)
                     blackCounter = 1;
                     status = 1;
                     startY = i;
                     startX = j;
-                
+                %else
+                %    [i,j] = increase(i,j,imSize);
+                    
                 end
                 
             case 1 
+                [i,j] = increase(i,j,imSize);
                 if(img1_n(i,j) == 0)
                     blackCounter = blackCounter + 1;
                     
@@ -71,6 +89,7 @@ for j = 1:1:imSize(2)
                     status = 2;
                 end
             case 2
+                [i,j] = increase(i,j,imSize);
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
                     
@@ -79,10 +98,12 @@ for j = 1:1:imSize(2)
                         centerCounter = 1;
                         status = 3;
                     else
-                        status = 0;
+                        [i,j] = increase(prevStart,j,imSize);
+                        status = -1;
                     end
                 end
             case 3
+                [i,j] = increase(i,j,imSize);
                 if(img1_n(i,j) == 0)
                     centerCounter = centerCounter + 1;
                 else
@@ -90,10 +111,12 @@ for j = 1:1:imSize(2)
                         whiteCounter = 1;
                         status = 4;
                     else
-                        status = 0;
+                        [i,j] = increase(prevStart,j,imSize);
+                        status = -1;
                     end
                 end
             case 4
+                [i,j] = increase(i,j,imSize);
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
                 else
@@ -101,11 +124,12 @@ for j = 1:1:imSize(2)
                         blackCounter = 1;
                         status = 5;
                     else
-                        status = 0;
-%                         i = i+1;
+                        [i,j] = increase(prevStart,j,imSize);
+                        status = -1;
                     end
                 end
             case 5
+                [i,j] = increase(i,j,imSize);
                 if(img1_n(i,j) == 0)
                     blackCounter = blackCounter + 1;
                     stopY = i;
@@ -116,11 +140,14 @@ for j = 1:1:imSize(2)
                         whiteCounter = 1;
                         status = 6;
                     else
-                        status = 0;
+                        [i,j] = increase(prevStart,j,imSize);
+                        status = -1;
                     end
                 end
             case 6
-                status = 0;
+                [i,j] = increase(i,j,imSize);
+                status = -1;
+              %  disp('klar med livet')
                 hold on
                 vertical = [vertical; zeros(1,7)];
                 vertical(n,1:4) = [startY, startX, stopY, stopX];
@@ -139,8 +166,14 @@ for j = 1:1:imSize(2)
                 plot(startX, startY, '+g')
                 plot(stopX, stopY, '+r')
         end
+        if(i == imSize(1) && j == imSize(2))
+            break;
+        end
     end
-    i = 0;
+    if(i == imSize(1) && j == imSize(2))
+            break;
+        end
+    %i = 0;
 end
 
 
