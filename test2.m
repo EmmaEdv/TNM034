@@ -15,6 +15,7 @@ imSize = size(img1_n);
 imshow(img1_n)
 
 % status
+% -1: White border around QR-code
 % 0: White border around QR-code
 % 1: Outer black border of fiducial mark
 % 2: Outer white border of fiducial mark
@@ -105,12 +106,6 @@ while j < imSize(2)
                 end
             case 4
                 [i,j] = increase(i,j,imSize,verHor);
-                
-                if(i >= 115 && i<=132 && j >= 145 && j <= 230 && status>2)
-                    disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
-                    disp(['blackCounter: ', num2str(blackCounter), ' whiteCounter: ', num2str(whiteCounter), ' color: ', num2str(img1_n(i,j))])
-                end
-
                 if(img1_n(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
                 else
@@ -145,7 +140,7 @@ while j < imSize(2)
                 vertical = [vertical; zeros(1,7)];
                 vertical(n,1:4) = [startY, startX, stopY, stopX];
                 %Draw lines:
-                line([vertical(n,2), vertical(n,4)], [vertical(n,1), vertical(n,3)], 'color', [0.0,0.5,0.0]);
+              %  line([vertical(n,2), vertical(n,4)], [vertical(n,1), vertical(n,3)], 'color', [0.0,0.5,0.0]);
                 %Calculate k and b of equation y=kx+b
                 k = slope(vertical(n,1:4));
                 b = intercept(vertical(n, 1:4), k);
@@ -154,7 +149,7 @@ while j < imSize(2)
                 
                 midY = startY + (stopY-startY)/2;
                 vertical(n,5) = midY;
-                plot(startX, midY, '+w');
+             %   plot(startX, midY, '+w');
                 n = n+1;
                 plot(startX, startY, '+g')
                 plot(stopX, stopY, '+r')
@@ -284,16 +279,16 @@ while i < imSize(1)
                 horizontal = [horizontal; zeros(1,7)];
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
                 %Draw lines:
-                line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)], 'color', [0.0,0.5,0.0]);
+               % line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)], 'color', [0.0,0.5,0.0]);
                 %Calculate k and b of equation y=kx+b
                 k = slope(horizontal(m,1:4));
                 b = intercept(horizontal(m, 1:4), k);
                 horizontal(m,6) = k;
                 horizontal(m,7) = b;
                 
-                midY = startY + (stopY-startY)/2;
-                horizontal(m,5) = midY;
-                plot(startX, midY, '+w');
+                midX = startX + (stopX-startX)/2;
+                horizontal(m,5) = midX;
+               % plot(midX, startY, '+w');
                 m = m+1;
                 plot(startX, startY, '+g')
                 plot(stopX, stopY, '+r')
@@ -307,3 +302,26 @@ while i < imSize(1)
     end
     %i = 0;
 end
+
+vl = size(vertical);
+xVert = [vertical(1,2),vertical(1,4), NaN];
+%yVert = [(vertical(1,5)-1), (vertical(1,5)+1), NaN];
+yVert = [(vertical(1,5)-1), (vertical(1,5)), NaN];
+for n = 2:vl(1)
+    xVert = [xVert, vertical(n,2), vertical(n,4), NaN];
+  %  yVert = [yVert, (vertical(n,5)-1), (vertical(n,5)+1), NaN];
+  yVert = [yVert, (vertical(n,5)-1), (vertical(n,5)), NaN];
+end
+
+hl = size(horizontal);
+%xHor = [(horizontal(1,5)-1),(horizontal(1,5)+1), NaN];
+xHor = [(horizontal(1,5)-1),(horizontal(1,5)), NaN];
+yHor = [horizontal(1,1), horizontal(1,3), NaN];
+for n = 2:hl(1)
+  %  xHor = [xHor, (horizontal(n,5)-1),(horizontal(n,5)+1), NaN];
+  xHor = [xHor, (horizontal(n,5)-1),(horizontal(n,5)), NaN];
+    yHor = [yHor, horizontal(n,1), horizontal(n,3), NaN];
+end
+
+[xi, yi] = polyxpoly(xVert, yVert, xHor, yHor);
+mapshow(xi,yi,'DisplayType','point','Marker','o')
