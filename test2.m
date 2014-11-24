@@ -2,7 +2,7 @@ close all
 clear all
 nrOfCols = 41;
 
-%img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');
+%img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
 img1 = imread('Images_Training_1/Bygg_1.png');
 %img1 = imread('Images_Training_3/Hus_2a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
@@ -303,25 +303,49 @@ while i < imSize(1)
     %i = 0;
 end
 
-vl = size(vertical);
-xVert = [vertical(1,2),vertical(1,4), NaN];
-%yVert = [(vertical(1,5)-1), (vertical(1,5)+1), NaN];
-yVert = [(vertical(1,5)-1), (vertical(1,5)), NaN];
-for n = 2:vl(1)
-    xVert = [xVert, vertical(n,2), vertical(n,4), NaN];
-  %  yVert = [yVert, (vertical(n,5)-1), (vertical(n,5)+1), NaN];
-  yVert = [yVert, (vertical(n,5)-1), (vertical(n,5)), NaN];
-end
 
-hl = size(horizontal);
-%xHor = [(horizontal(1,5)-1),(horizontal(1,5)+1), NaN];
-xHor = [(horizontal(1,5)-1),(horizontal(1,5)), NaN];
-yHor = [horizontal(1,1), horizontal(1,3), NaN];
-for n = 2:hl(1)
-  %  xHor = [xHor, (horizontal(n,5)-1),(horizontal(n,5)+1), NaN];
-  xHor = [xHor, (horizontal(n,5)-1),(horizontal(n,5)), NaN];
-    yHor = [yHor, horizontal(n,1), horizontal(n,3), NaN];
-end
 
-[xi, yi] = polyxpoly(xVert, yVert, xHor, yHor);
-mapshow(xi,yi,'DisplayType','point','Marker','o')
+%Tar bort alla tomma rader (2an betyder att den kollar radvis)
+vertical(all(vertical==0,2),:)=[];
+horizontal(all(horizontal==0,2),:)=[];
+
+%sort horizontal by start Y pos, vertical by start X pos
+sortedHorizontal = sortrows(horizontal, [1 2]);
+sortedVertical = sortrows(vertical, [2 1]);
+
+[cleanHorizontal, cleanVertical] = checkNeighbours(sortedVertical, sortedHorizontal);
+figure
+plot(cleanHorizontal(:,2), cleanHorizontal(:,3))
+plot(cleanHorizontal(:,2), cleanHorizontal(:,1))
+
+plot(cleanHorizontal(:,1), cleanHorizontal(:,4))
+plot(cleanHorizontal(:,1), cleanHorizontal(:,2))
+
+
+
+
+
+% % % % % 
+% % % % % % Ritar ut centerpunkter.. kollar p? 1 pixel t h?ger och 1 t v?nster
+% % % % % vl = size(vertical);
+% % % % % xVert = [vertical(1,2),vertical(1,4), NaN];
+% % % % % yVert = [(vertical(1,5)-1), (vertical(1,5)+1), NaN];
+% % % % % %yVert = [(vertical(1,5)), (vertical(1,5)), NaN];
+% % % % % for n = 2:vl(1)
+% % % % %     xVert = [xVert, vertical(n,2), vertical(n,4), NaN];
+% % % % %     yVert = [yVert, (vertical(n,5)-1), (vertical(n,5)+1), NaN];
+% % % % %     %yVert = [yVert, (vertical(n,5)), (vertical(n,5)), NaN];
+% % % % % end
+% % % % % 
+% % % % % hl = size(horizontal);
+% % % % % xHor = [(horizontal(1,5)-1),(horizontal(1,5)+1), NaN];
+% % % % % %xHor = [(horizontal(1,5)),(horizontal(1,5)), NaN];
+% % % % % yHor = [horizontal(1,1), horizontal(1,3), NaN];
+% % % % % for n = 2:hl(1)
+% % % % %     xHor = [xHor, (horizontal(n,5)-1),(horizontal(n,5)+1), NaN];
+% % % % %     %xHor = [xHor, (horizontal(n,5)),(horizontal(n,5)), NaN];
+% % % % %     yHor = [yHor, horizontal(n,1), horizontal(n,3), NaN];
+% % % % % end
+% % % % % 
+% % % % % [xi, yi] = polyxpoly(xVert, yVert, xHor, yHor);
+% % % % % mapshow(xi,yi,'DisplayType','point','Marker','o')
