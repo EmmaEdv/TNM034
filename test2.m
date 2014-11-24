@@ -315,11 +315,14 @@ sortedVertical = sortrows(vertical, [2 1]);
 
 [cleanHorizontal, cleanVertical] = checkNeighbours(sortedVertical, sortedHorizontal);
 figure
-plot(cleanHorizontal(:,2), cleanHorizontal(:,3))
-plot(cleanHorizontal(:,2), cleanHorizontal(:,1))
+imshow(img1_n)
+hold on
 
-plot(cleanHorizontal(:,1), cleanHorizontal(:,4))
-plot(cleanHorizontal(:,1), cleanHorizontal(:,2))
+plot(cleanHorizontal(:,4), cleanHorizontal(:,3), 'g*')
+plot(cleanHorizontal(:,2), cleanHorizontal(:,1), 'r*')
+
+plot(cleanVertical(:,4), cleanVertical(:,3), 'b+')
+plot(cleanVertical(:,2), cleanVertical(:,1), 'y+')
 
 
 

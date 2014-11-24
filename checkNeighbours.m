@@ -2,37 +2,47 @@ function [ cleanHorizontal, cleanVertical ] = checkNeighbours( sortedVertical, s
     %Create 2 matrices which will keep the fiducial marks
 % cleanHorizontal = zeros(1,7);
 % cleanVertical = zeros(1,7);
+    spann = 1;
+    inRow = 0;
     count = 1;
     sizeOfV = size(sortedVertical,1);
     disp(sizeOfV)
     while count <= sizeOfV
         %if count < sizeOfV
-        
             %first row  
             %disp(['sortV count +1 - count', num2str(sortedVertical(count+1,2) - sortedVertical(count,2))])
             if count == 1
-                if (sortedVertical(count+1,2) - sortedVertical(count,2)) > 1
+                if (sortedVertical(count+1,2) - sortedVertical(count,2)) > spann
                     sortedVertical(count,:) = [];
                     sizeOfV = sizeOfV-1;
                     disp('ta bort 1')
+                    inRow = 0;
+                else
+                    inRow = inRow+1;
                 end
             elseif count == sizeOfV
-                if ((sortedVertical(count,2) - sortedVertical(count-1,2)) > 1)
+                if ((sortedVertical(count,2) - sortedVertical(count-1,2)) > spann)
                     %Remove the lonely lines
                     %disp(['tar bort rad: ', num2str(sortedVertical(count,:))])
                     sortedVertical(count,:) = [];
                     sizeOfV = sizeOfV-1;
                     disp('ta bort 3')
+                    inRow = 0;
+                else
+                    inRow = inRow+1;
                 end
             %all rows in between 1st and last
             elseif count > 1 && count < sizeOfV
                 disp(count)
-                if ((sortedVertical(count+1,2) - sortedVertical(count,2)) > 1) && (sortedVertical(count,2) - sortedVertical(count-1,2)) > 1
+                if ((sortedVertical(count+1,2) - sortedVertical(count,2)) > spann) && (sortedVertical(count,2) - sortedVertical(count-1,2)) > spann
                     %Remove the lonely lines
                     %disp(['tar bort rad: ', num2str(sortedVertical(count,:))])
                     sortedVertical(count,:) = [];
                     sizeOfV = sizeOfV-1;
                     disp('ta bort 2')
+                    inRow = 0;
+                else
+                    inRow = inRow+1;
                 end
             %last row
             end
@@ -50,13 +60,13 @@ function [ cleanHorizontal, cleanVertical ] = checkNeighbours( sortedVertical, s
             %first row  
             %disp(['sortV count +1 - count', num2str(sortedVertical(count+1,2) - sortedVertical(count,2))])
             if count == 1
-                if (sortedHorizontal(count+1,1) - sortedHorizontal(count,1)) > 1
+                if (sortedHorizontal(count+1,1) - sortedHorizontal(count,1)) > spann
                     sortedHorizontal(count,:) = [];
                     sizeOfH = sizeOfH-1;
                     disp('ta bort 1')
                 end
             elseif count == sizeOfH
-                if ((sortedHorizontal(count,1) - sortedHorizontal(count-1,1)) > 1)
+                if ((sortedHorizontal(count,1) - sortedHorizontal(count-1,1)) > spann)
                     %Remove the lonely lines
                     %disp(['tar bort rad: ', num2str(sortedVertical(count,:))])
                     sortedHorizontal(count,:) = [];
@@ -66,7 +76,7 @@ function [ cleanHorizontal, cleanVertical ] = checkNeighbours( sortedVertical, s
             %all rows in between 1st and last
             elseif count > 1 && count < sizeOfH
                 disp(count)
-                if ((sortedHorizontal(count+1,1) - sortedHorizontal(count,1)) > 1) && (sortedHorizontal(count,1) - sortedHorizontal(count-1,1)) > 1
+                if ((sortedHorizontal(count+1,1) - sortedHorizontal(count,1)) > spann) && (sortedHorizontal(count,1) - sortedHorizontal(count-1,1)) > spann
                     %Remove the lonely lines
                     %disp(['tar bort rad: ', num2str(sortedVertical(count,:))])
                     sortedHorizontal(count,:) = [];
