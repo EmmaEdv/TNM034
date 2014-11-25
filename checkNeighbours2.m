@@ -10,12 +10,9 @@ prevY = sortedVertical(1,5);
 prevX = sortedVertical(1,2);
 nextY = sortedVertical(2,5);
 nextX = sortedVertical(2,2);
-cleanVertical = zeros(1,7);
 
 fiducial = zeros(1,2);
 nrFiducials = 0;
-lastY = firstY;
-lastX = firstX;
 
 nrInRow = 1;
 spann = 5;
@@ -32,15 +29,17 @@ i = 2;
         %Om n?sta linje ligger bredvid %%%(nextX - prevX > 0 && nextY -
         %prevY > 0 && )
         if  nextX - prevX < spann && nextY - prevY < spann && i ~= sizeOfV-1
-            %disp(['I RAD!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
-            %disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
-            %disp('  ')
+            disp(['I RAD!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
+            disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
+            disp('  ')
             prevX = nextX;
             prevY = nextY;
             %cleanVertical = [cleanVertical, zeros(1,7)];
             nrInRow = nrInRow + 1;
         %Om n?sta linje har ett st?rre avst?nd fr?n f?reg?ende ?n spann    
-        elseif (nextX - prevX > spann || nextY - prevY > spann || i == sizeOfV-1)  && nrInRow > 10
+
+        elseif (nextX - prevX > spann || nextY - prevY > spann || i == sizeOfV-1) && nrInRow > 10
+
             %R?kna ut medelv?rdet!!!
             disp(['SKIT!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
             disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
@@ -79,7 +78,4 @@ i = 2;
     fiducial(all(fiducial==0,2),:)=[];
     disp(['nr of fiducials: ', num2str(nrFiducials)]);
     
-    %cleanHorizontal = 0;
-    %cleanVertical = 0;
-
 end

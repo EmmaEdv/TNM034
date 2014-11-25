@@ -3,8 +3,9 @@ clear all
 nrOfCols = 41;
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
-img1 = imread('Images_Training_1/Bygg_1.png');
-%img1 = imread('Images_Training_3/Hus_2a.png');
+%img1 = imread('Images_Training_1/Bygg_1.png');
+img1 = imread('Images_Training_1/roterad.png');
+%img1 = imread('Images_Training_2/Hus_1a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
 
 %Normalize
@@ -135,6 +136,7 @@ while j < imSize(2)
             case 6
                 [i,j] = increase(i,j,imSize,verHor);
                 status = -1;
+                bit = blackCounter;
                 whiteCounter = 1;
                 hold on
                 vertical = [vertical; zeros(1,7)];
