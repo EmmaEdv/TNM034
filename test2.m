@@ -12,7 +12,7 @@ img1_n = im2bw(img1, graythresh(img1));
 
 imSize = size(img1_n);
 
-imshow(img1_n)
+%imshow(img1_n)
 
 % status
 % -1: White border around QR-code
@@ -151,8 +151,8 @@ while j < imSize(2)
                 vertical(n,5) = midY;
              %   plot(startX, midY, '+w');
                 n = n+1;
-                plot(startX, startY, '+g')
-                plot(stopX, stopY, '+r')
+% % % %                 plot(startX, startY, '+g')
+% % % %                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -290,8 +290,8 @@ while i < imSize(1)
                 horizontal(m,5) = midX;
                % plot(midX, startY, '+w');
                 m = m+1;
-                plot(startX, startY, '+g')
-                plot(stopX, stopY, '+r')
+% % % %                 plot(startX, startY, '+g')
+% % % %                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -315,11 +315,60 @@ sortedVertical = sortrows(vertical, [1 2]);
 
 %[cleanHorizontal, cleanVertical] = checkNeighbours2(sortedVertical, sortedHorizontal);
 [fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal);
-figure
+sortedFiducial = sortrows(fiducial, [1 2]);
+
+%figure
 imshow(img1_n)
 hold on
-plot(fiducial(:,1), fiducial(:,2), 'g*');
-% 
+plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
+sizeF = size(sortedFiducial,1);
+
+line([sortedFiducial(1,1), sortedFiducial(2,1)], [sortedFiducial(1,2), sortedFiducial(2,2)], 'color', [0.0,0.5,0.0]);
+line([sortedFiducial(1,1), sortedFiducial(3,1)], [sortedFiducial(1,2), sortedFiducial(3,2)], 'color', [0.0,0.5,0.0]);
+line([sortedFiducial(3,1), sortedFiducial(2,1)], [sortedFiducial(3,2), sortedFiducial(2,2)], 'color', [0.0,0.5,0.0]);
+figure
+imshow(img1_n)
+%Räknar ut vinkeln för den horizontella linjen
+%counterClock = -1 counter clockwise rotation, = 1 clockwise rot.
+
+%kontrollera att sorteringen är rätt, anpassa om fel..
+%om första if-satsen stämmer innebär det att bilden är roterad moturs
+if sortedFiducial(1,2) < sortedFiducial(2,2)
+    xH = sortedFiducial(3,1)- sortedFiducial(1,1);
+    yH = sortedFiducial(1,2)- sortedFiducial(3,2);
+    
+    counterClock = -1;    
+    h = sqrt( xH ^2 + yH^2);
+    horAngle = counterClock*radtodeg(acos(xH/h))
+    disp(['i want to go clockwise: ', num2str(horAngle)])
+
+%Annars är bilden roterad medurs och då hamnar den "viktiga" punkten i
+%[(2,1),(2,2)]
+else
+   
+    xH = sortedFiducial(3,1)- sortedFiducial(2,1);
+    yH = sortedFiducial(2,2)- sortedFiducial(3,2);
+    
+    counterClock = 1;
+    h = sqrt( xH ^2 + yH^2);
+    horAngle = counterClock*radtodeg(acos(xH/h))
+    disp(['i want to go counterClockwise: ', horAngle])
+end
+
+
+%//////////////////VERT
+% y = fiducial(3,2)- fiducial(1,2);
+% if fiducial(1,1) > fiducial(3,1)
+%     x = fiducial(1,1)- fiducial(3,1);
+% else
+%     x = fiducial(3,1)- fiducial(1,1);
+% end
+% h = sqrt( x ^2 + y^2);
+% vertAngle = radtodeg(acos(y/h));
+% avgAngle = (vertAngle + horAngle)/2;
+rotatedImage = imrotate(img1_n, horAngle);
+imshow(rotatedImage);
+
 % plot(cleanHorizontal(:,4), cleanHorizontal(:,3), 'g*')
 % plot(cleanHorizontal(:,2), cleanHorizontal(:,1), 'r*')
 % 

@@ -40,7 +40,7 @@ i = 2;
             %cleanVertical = [cleanVertical, zeros(1,7)];
             nrInRow = nrInRow + 1;
         %Om n?sta linje har ett st?rre avst?nd fr?n f?reg?ende ?n spann    
-        elseif (nextX - prevX > spann || nextY - prevY > spann || i == sizeOfV-1)  && nrInRow > 10
+        elseif (nextX - prevX > spann || nextY - prevY > spann || i == sizeOfV-1)  && nrInRow > 6
             %R?kna ut medelv?rdet!!!
             disp(['SKIT!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
             disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
@@ -54,8 +54,7 @@ i = 2;
             medX = (prevX + firstX)/2;
             medY = (prevY + firstY)/2;
             
-            
-            fiducial = [fiducial; zeros(1,2)];
+            fiducial = [fiducial; zeros(1,7)];
             fiducial(nrFiducials, :) = [medX, medY];
             
             nrInRow = 0;
@@ -75,8 +74,7 @@ i = 2;
         nextY = sortedVertical(i,5);
         
     end
-    %remove the empty ro in fiducials
-    fiducial(all(fiducial==0,2),:)=[];
+    
     disp(['nr of fiducials: ', num2str(nrFiducials)]);
     
     %cleanHorizontal = 0;
