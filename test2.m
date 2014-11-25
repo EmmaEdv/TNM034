@@ -310,19 +310,21 @@ vertical(all(vertical==0,2),:)=[];
 horizontal(all(horizontal==0,2),:)=[];
 
 %sort horizontal by start Y pos, vertical by start X pos
-sortedHorizontal = sortrows(horizontal, [1 2]);
-sortedVertical = sortrows(vertical, [2 1]);
+sortedHorizontal = sortrows(horizontal, [2 1]);
+sortedVertical = sortrows(vertical, [1 2]);
 
-[cleanHorizontal, cleanVertical] = checkNeighbours(sortedVertical, sortedHorizontal);
+%[cleanHorizontal, cleanVertical] = checkNeighbours2(sortedVertical, sortedHorizontal);
+[fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal);
 figure
 imshow(img1_n)
 hold on
-
-plot(cleanHorizontal(:,4), cleanHorizontal(:,3), 'g*')
-plot(cleanHorizontal(:,2), cleanHorizontal(:,1), 'r*')
-
-plot(cleanVertical(:,4), cleanVertical(:,3), 'b+')
-plot(cleanVertical(:,2), cleanVertical(:,1), 'y+')
+plot(fiducial(:,1), fiducial(:,2), 'g*');
+% 
+% plot(cleanHorizontal(:,4), cleanHorizontal(:,3), 'g*')
+% plot(cleanHorizontal(:,2), cleanHorizontal(:,1), 'r*')
+% 
+% plot(cleanVertical(:,4), cleanVertical(:,3), 'b+')
+% plot(cleanVertical(:,2), cleanVertical(:,1), 'y+')
 
 
 
