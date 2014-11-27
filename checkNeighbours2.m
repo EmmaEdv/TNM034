@@ -29,9 +29,9 @@ i = 2;
         %Om n?sta linje ligger bredvid %%%(nextX - prevX > 0 && nextY -
         %prevY > 0 && )
         if  nextX - prevX < spann && nextY - prevY < spann && i ~= sizeOfV-1
-            disp(['I RAD!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
-            disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
-            disp('  ')
+%             disp(['I RAD!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
+%             disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
+%             disp('  ')
             prevX = nextX;
             prevY = nextY;
             %cleanVertical = [cleanVertical, zeros(1,7)];
@@ -41,14 +41,14 @@ i = 2;
         elseif (nextX - prevX > spann || nextY - prevY > spann || i == sizeOfV-1) && nrInRow > 10
 
             %R?kna ut medelv?rdet!!!
-            disp(['SKIT!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
-            disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
-            disp(' ')
+%             disp(['SKIT!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
+%             disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
+%             disp(' ')
             
             nrFiducials = nrFiducials + 1;
             
-            disp(['prev x: ',num2str(prevX), ', first x: ',num2str(firstX), ', prev y: ',num2str(prevY), ', first y: ',num2str(firstY)]);
-            disp(' ')
+%             disp(['prev x: ',num2str(prevX), ', first x: ',num2str(firstX), ', prev y: ',num2str(prevY), ', first y: ',num2str(firstY)]);
+%             disp(' ')
             %R?kna medelpunkten
             medX = (prevX + firstX)/2;
             medY = (prevY + firstY)/2;
@@ -76,6 +76,6 @@ i = 2;
     end
     %remove the empty ro in fiducials
     fiducial(all(fiducial==0,2),:)=[];
-    disp(['nr of fiducials: ', num2str(nrFiducials)]);
+%     disp(['nr of fiducials: ', num2str(nrFiducials)]);
     
 end

@@ -4,7 +4,7 @@ nrOfCols = 41;
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
 %img1 = imread('Images_Training_1/Bygg_1.png');
-img1 = imread('Images_Training_1/roterad.png');
+img1 = imread('Images_Training_1/Bygg_1.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
 
@@ -36,7 +36,9 @@ n = 1;
 status = -1;
 blackCounter = 0;
 whiteCounter = 0;
-
+%want to save the average bit length for readQR
+avgBit = 0; %also divide by the number of times we add length
+avgCounter = 0;
 centerCounter = 0;
 startX = 0;
 startY = 0;
@@ -136,7 +138,8 @@ while j < imSize(2)
             case 6
                 [i,j] = increase(i,j,imSize,verHor);
                 status = -1;
-                bit = blackCounter;
+                avgBit = avgBit + blackCounter;
+                avgCounter = avgCounter + 1;
                 whiteCounter = 1;
                 hold on
                 vertical = [vertical; zeros(1,7)];
@@ -277,6 +280,8 @@ while i < imSize(1)
                 [i,j] = increase(i,j,imSize, verHor);
                 status = -1;
                 whiteCounter = 1;
+                avgBit = blackCounter + avgBit;
+                avgCounter = avgCounter + 1;
                 hold on
                 horizontal = [horizontal; zeros(1,7)];
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
@@ -305,7 +310,8 @@ while i < imSize(1)
     %i = 0;
 end
 
-
+%Average bitLength
+avgBit = avgBit/avgCounter
 
 %Tar bort alla tomma rader (2an betyder att den kollar radvis)
 vertical(all(vertical==0,2),:)=[];
@@ -341,8 +347,8 @@ if sortedFiducial(1,2) < sortedFiducial(2,2)
     
     counterClock = -1;    
     h = sqrt( xH ^2 + yH^2);
-    horAngle = counterClock*radtodeg(acos(xH/h))
-    disp(['i want to go clockwise: ', num2str(horAngle)])
+    horAngle = counterClock*radtodeg(acos(xH/h));
+%     disp(['i want to go clockwise: ', num2str(horAngle)])
 
 %Annars är bilden roterad medurs och då hamnar den "viktiga" punkten i
 %[(2,1),(2,2)]
@@ -353,8 +359,8 @@ else
     
     counterClock = 1;
     h = sqrt( xH ^2 + yH^2);
-    horAngle = counterClock*radtodeg(acos(xH/h))
-    disp(['i want to go counterClockwise: ', horAngle])
+    horAngle = counterClock*radtodeg(acos(xH/h));
+%     disp(['i want to go counterClockwise: ', horAngle])
 end
 
 
@@ -371,6 +377,8 @@ end
 rotatedImage = imrotate(img1_n, horAngle);
 imshow(rotatedImage);
 
+[text] = readQR(rotatedImage, avgBit, sortedFiducial);
+disp(text);
 % plot(cleanHorizontal(:,4), cleanHorizontal(:,3), 'g*')
 % plot(cleanHorizontal(:,2), cleanHorizontal(:,1), 'r*')
 % 

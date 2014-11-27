@@ -1,17 +1,20 @@
 %function [ str ] = readQR( img, centerPoints, bitSize )
-function [ wholeText ] = readQR( img, bitSize, sortedFiducial )
+function [ wholeText ] = readQR( img, bitSize )
 %OBS!! H?RDKODA INTE CENTERPOINTSEN!
 close all
+%like this eller?
+img1_n = im2bw(img, graythresh(img));
+%
 figure
-    imshow(img)
+    imshow(img1_n)
     %den r?ta exmepelbilden ([TL[x,y]; TR[x,y]; BL[x,y]]): centerPoints = [106,197;494,197;106,585];
-    %centerPoints = [106,197; 494,197; 106,585];
+    centerPoints = [106,197; 494,197; 106,585];
     %crop the image so that it only shows the qr code
-    xmin = (sortedFiducial(2,1)-3.5*bitSize);
-    ymin = (sortedFiducial(2,2)-3.5*bitSize);
+    xmin = (centerPoints(1,1)-3.5*bitSize);
+    ymin = (centerPoints(1,2)-3.5*bitSize);
     width = 41*bitSize;
     height = 41*bitSize;
-    cropImg = imcrop(img, [xmin ymin width height]);
+    cropImg = imcrop(img1_n, [xmin ymin width height]);
     figure
     imshow(cropImg);
 
@@ -54,7 +57,7 @@ figure
                 counter = counter + 1;
                 
                 %string = strcat(string, num2str(cropImg(i,j)));
-                temp(1,counter) = cropImg(i,j);
+                temp(1,counter) = cropImg(i,j)
                 %L?gger in bin?ra siffrorna i array, 8 st/rad 
                 %binary(n, counter) = cropImg(i,j);
                 %L?s 8 bitar ?t g?ngen
