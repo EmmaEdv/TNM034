@@ -3,8 +3,8 @@ clear all
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
 %img1 = imread('Images_Training_1/Bygg_1.png');
-%img1 = imread('Images_Training_1/Bygg_1a.png');
-img1 = imread('Images_Training_1/roterad.png');
+img1 = imread('Images_Training_1/Bygg_1a.png');
+% img1 = imread('Images_Training_1/roterad.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
 
@@ -69,7 +69,7 @@ end
 % vertAngle = radtodeg(acos(y/h));
 
 % avgAngle = (vertAngle + horAngle)/2;
-rotatedImage = imrotate(img1, horAngle, 'bicubic');
+rotatedImage = imrotate(img1, hAngle, 'bicubic');
 img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 
 %Hitta fippar igen
