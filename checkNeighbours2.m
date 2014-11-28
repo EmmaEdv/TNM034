@@ -12,6 +12,7 @@ nextY = sortedVertical(2,5);
 nextX = sortedVertical(2,2);
 
 fiducial = zeros(1,2);
+%fiducial = zeros(1,3);
 nrFiducials = 0;
 
 nrInRow = 1;
@@ -19,40 +20,48 @@ spann = 5;
 i = 2;
 
     while i < sizeOfV
-        %s? l?nge det finns en n?sta p? avst?nd < spann till denna, 
-        %s? vill spara next till "sista"
-        %annars s? vill vi r?kna (sista-start)/antal punkter
-        %?ka p? n?sta
+        %save next to last as long as there is a next at a disctance < spann to prev
+        %else count (last-start)/nrInRow
+        %increase next
         hej = nextX - firstX;
-       % disp(['first: ' , num2str(firstY), ', next: ' , num2str(nextY), ', i rad: ', num2str(nrInRow)])
-       % disp(hej);
-        %Om n?sta linje ligger bredvid %%%(nextX - prevX > 0 && nextY -
-        %prevY > 0 && )
-        if  nextX - prevX < spann && nextY - prevY < spann && i ~= sizeOfV-1
-%             disp(['I RAD!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
-%             disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
-%             disp('  ')
-            prevX = nextX;
-            prevY = nextY;
-            %cleanVertical = [cleanVertical, zeros(1,7)];
-            nrInRow = nrInRow + 1;
-        %Om n?sta linje har ett st?rre avst?nd fr?n f?reg?ende ?n spann    
+        
+        %If next point is at distance < spann to prev
+        %if  nextX - prevX < spann && nextY - prevY < spann && i ~= sizeOfV-1
+        if nextY - prevY < spann && i ~= sizeOfV-1
+            if nextX - prevX < spann && nextX - prevX > 0
+                disp([num2str(i), ', nextY: ', num2str(nextY), ', prevY: ', num2str(prevY)])
+                disp([num2str(i), ', nextX: ', num2str(nextX), ', prevX: ', num2str(prevX)])
+                disp(' ')
+                prevX = nextX;
+                prevY = nextY;
+                %cleanVertical = [cleanVertical, zeros(1,7)];
+                nrInRow = nrInRow + 1;
+            elseif  nrInRow > 10
+                disp('bajs')
+                nrFiducials = nrFiducials + 1;
+                %Calculate center point
+                medX = (prevX + firstX)/2;
+                medY = (prevY + firstY)/2;
 
+                fiducial = [fiducial; zeros(1,2)];
+                fiducial(nrFiducials, :) = [medX, medY];
+
+                nrInRow = 0;
+                firstX = sortedVertical(i,2);
+                firstY = sortedVertical(i,5);
+            else
+                firstX = sortedVertical(i,2);
+                firstY = sortedVertical(i,5);
+            end
+            
+            
+        %If next is at distance > spann to prev and there are more than 10
+        %points in a row
         elseif (nextX - prevX > spann || nextY - prevY > spann || i == sizeOfV-1) && nrInRow > 10
-
-            %R?kna ut medelv?rdet!!!
-%             disp(['SKIT!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
-%             disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
-%             disp(' ')
-            
             nrFiducials = nrFiducials + 1;
-            
-%             disp(['prev x: ',num2str(prevX), ', first x: ',num2str(firstX), ', prev y: ',num2str(prevY), ', first y: ',num2str(firstY)]);
-%             disp(' ')
-            %R?kna medelpunkten
+            %Calculate center point
             medX = (prevX + firstX)/2;
             medY = (prevY + firstY)/2;
-            
             
             fiducial = [fiducial; zeros(1,2)];
             fiducial(nrFiducials, :) = [medX, medY];
@@ -60,10 +69,8 @@ i = 2;
             nrInRow = 0;
             firstX = sortedVertical(i,2);
             firstY = sortedVertical(i,5);
+        %If the distance > spann and there are no points in a row
         else
-            %disp(['ANNARS!: first y: ' , num2str(firstY), ', next y: ' , num2str(nextY), ', prev y: ' , num2str(prevY)])
-            %disp([ 'first x: ' , num2str(firstX),  ', next x: ' , num2str(nextX), ', prev x: ' , num2str(prevX), ', i rad: ', num2str(nrInRow)])
-            %disp(' ')
             firstX = sortedVertical(i,2);
             firstY = sortedVertical(i,5);
         end
@@ -74,7 +81,7 @@ i = 2;
         nextY = sortedVertical(i,5);
         
     end
-    %remove the empty ro in fiducials
+    %remove the empty row in fiducials
     fiducial(all(fiducial==0,2),:)=[];
 %     disp(['nr of fiducials: ', num2str(nrFiducials)]);
     
