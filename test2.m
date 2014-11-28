@@ -68,9 +68,22 @@ end
 % h = sqrt( x ^2 + y^2);
 % vertAngle = radtodeg(acos(y/h));
 % avgAngle = (vertAngle + horAngle)/2;
-rotatedImage = imrotate(img1_n, horAngle);
-imshow(rotatedImage);
+rotatedImage = imrotate(img1, horAngle, 'bicubic');
+img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
+
+%Hitta fippar igen
+[horizontal, vertical, avgBit] = findFiducials(img2_n);
+
+%sort horizontal by start Y pos, vertical by start X pos
+sortedHorizontal = sortrows(horizontal, [2 1]);
+sortedVertical = sortrows(vertical, [1 2]);
+
+%Find the three fiducial marks
+[fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal);
+sortedFiducial = sortrows(fiducial, [1 2]);
+
+imshow(img2_n);
 
 %Read QR-code
-[text] = readQR(rotatedImage, avgBit, sortedFiducial);
-disp(text);
+% % [text] = readQR(rotatedImage, avgBit, sortedFiducial);
+% disp(text);
