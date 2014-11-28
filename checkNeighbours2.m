@@ -29,8 +29,8 @@ i = 2;
         %if  nextX - prevX < spann && nextY - prevY < spann && i ~= sizeOfV-1
         if nextY - prevY < spann && i ~= sizeOfV-1
             if nextX - prevX < spann && nextX - prevX > 0
-                disp([num2str(i), ', nextY: ', num2str(nextY), ', prevY: ', num2str(prevY)])
-                disp([num2str(i), ', nextX: ', num2str(nextX), ', prevX: ', num2str(prevX)])
+                disp([num2str(i), ', firstY: ', num2str(firstY), ', nextY: ', num2str(nextY), ', prevY: ', num2str(prevY)])
+                disp([num2str(i), ', firstX: ', num2str(firstX), ', nextX: ', num2str(nextX), ', prevX: ', num2str(prevX)])
                 disp(' ')
                 prevX = nextX;
                 prevY = nextY;

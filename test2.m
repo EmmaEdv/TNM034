@@ -24,10 +24,10 @@ sortedFiducial = sortrows(fiducial, [1 2]);
 
 figure
 imshow(img1_n)
- hold on
- plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
+hold on
+plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
+figure
 sizeF = size(sortedFiducial,1);
-
 % %Drawing lines between the three fiducials to get the angle
 % line([sortedFiducial(1,1), sortedFiducial(2,1)], [sortedFiducial(1,2), sortedFiducial(2,2)], 'color', [0.0,0.5,0.0]);
 % line([sortedFiducial(1,1), sortedFiducial(3,1)], [sortedFiducial(1,2), sortedFiducial(3,2)], 'color', [0.0,0.5,0.0]);
@@ -68,8 +68,8 @@ end
 % h = sqrt( x ^2 + y^2);
 % vertAngle = radtodeg(acos(y/h));
 
-% avgAngle = (vertAngle + horAngle)/2;
-rotatedImage = imrotate(img1, horAngle, 'bicubic');
+% avgAngle = (vertAngle + hAngle)/2;
+rotatedImage = imrotate(img1, hAngle, 'bicubic');
 img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 
 %Hitta fippar igen

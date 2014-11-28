@@ -19,7 +19,9 @@ imSize = size(img);
 % 4: Same as 2
 % 5: Same as 1
 % 6: extra case.. 
-
+figure
+imshow(img)
+hold on
 vertical = zeros(1, 5);
 n = 1;
 status = -1;
@@ -270,7 +272,7 @@ while i < imSize(1)
                 
                 midX = startX + (stopX-startX)/2;
                 horizontal(m,5) = midX;
-               plot(midX, startY, '+w');
+                plot(midX, startY, '+w');
                 m = m+1;
                 plot(startX, startY, '+g')
                 plot(stopX, stopY, '+r')
