@@ -1,10 +1,10 @@
 close all
 clear all
-nrOfCols = 41;
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
 %img1 = imread('Images_Training_1/Bygg_1.png');
-img1 = imread('Images_Training_1/Bygg_1.png');
+%img1 = imread('Images_Training_1/Bygg_1a.png');
+img1 = imread('Images_Training_1/roterad.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
 
@@ -22,10 +22,10 @@ sortedVertical = sortrows(vertical, [1 2]);
 [fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal);
 sortedFiducial = sortrows(fiducial, [1 2]);
 
-%figure
-%imshow(img1_n)
-% hold on
-% plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
+figure
+imshow(img1_n)
+ hold on
+ plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
 sizeF = size(sortedFiducial,1);
 
 % %Drawing lines between the three fiducials to get the angle
@@ -44,9 +44,9 @@ if sortedFiducial(1,2) < sortedFiducial(2,2)
     
     counterClock = -1;    
     h = sqrt( xH ^2 + yH^2);
-    horAngle = counterClock*radtodeg(acos(xH/h));
-%     disp(['i want to go clockwise: ', num2str(horAngle)])
-
+    hAngle = counterClock*radtodeg(acos(xH/h));
+%     disp(['i want to go clockwise: ', num2str(hAngle)])
+    
 %Rotate image clockwise, center point in: [(2,1),(2,2)]
 else
     xH = sortedFiducial(3,1)- sortedFiducial(2,1);
@@ -54,8 +54,8 @@ else
     
     counterClock = 1;
     h = sqrt( xH ^2 + yH^2);
-    horAngle = counterClock*radtodeg(acos(xH/h));
-%     disp(['i want to go counterClockwise: ', horAngle])
+    hAngle = counterClock*radtodeg(acos(xH/h));
+%     disp(['i want to go counterClockwise: ', hAngle])
 end
 
 %//////////////////VERT
@@ -67,9 +67,25 @@ end
 % end
 % h = sqrt( x ^2 + y^2);
 % vertAngle = radtodeg(acos(y/h));
-% avgAngle = (vertAngle + horAngle)/2;
-rotatedImage = imrotate(img1_n, horAngle);
+% avgAngle = (vertAngle + hAngle)/2;
+rotatedImage = imrotate(img1_n, hAngle);
+figure
 imshow(rotatedImage);
+
+% imgSize = size(img1_n);
+% a = [1,0,imgSize(1)/2; 0,1,imgSize(2)/2; 0,0,1];
+% b = [radtodeg(cos(hAngle)),radtodeg(-counterClock*sin(hAngle)),0; 
+%     radtodeg(counterClock*sin(hAngle)),radtodeg(cos(hAngle)),0; 0,0,1];
+% c = [1,0,-imgSize(1)/2; 1,1,-imgSize(2)/2; 0,0,1];
+% 
+% M = c'*b*a';
+% sortedFiducial = M*sortedFiducial;
+% 
+% 
+% rotacioni = [radtodeg(cos(hAngle)) radtodeg(-counterClock*sin(hAngle)); radtodeg(counterClock*sin(hAngle)) radtodeg(cos(hAngle))];
+% 
+% xx = fiducial(:,1)*rotacioni(1,1) + fiducial(:,2)*rotacioni(1,2);
+% yy = fiducial(:,1)*rotacioni(2,1) + fiducial(:,2)*rotacioni(2,2);
 
 %Read QR-code
 [text] = readQR(rotatedImage, avgBit, sortedFiducial);

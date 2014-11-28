@@ -139,10 +139,10 @@ while j < imSize(2)
                 
                 midY = startY + (stopY-startY)/2;
                 vertical(n,5) = midY;
-             %   plot(startX, midY, '+w');
+                plot(startX, midY, '+w');
                 n = n+1;
-% % % %                 plot(startX, startY, '+g')
-% % % %                 plot(stopX, stopY, '+r')
+                plot(startX, startY, '+g')
+                plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -229,11 +229,6 @@ while i < imSize(1)
                 end
             case 4
                 [i,j] = increase(i,j,imSize, verHor);
-                
-                if(i >= 115 && i<=132 && j >= 145 && j <= 230 && status>2)
-                    disp(['status: ', num2str(status), ' i: ', num2str(i), ' j: ', num2str(j)])
-                    disp(['blackCounter: ', num2str(blackCounter), ' whiteCounter: ', num2str(whiteCounter), ' color: ', num2str(img(i,j))])
-                end
 
                 if(img(i,j) == 1)
                     whiteCounter = whiteCounter + 1;
@@ -275,10 +270,10 @@ while i < imSize(1)
                 
                 midX = startX + (stopX-startX)/2;
                 horizontal(m,5) = midX;
-               % plot(midX, startY, '+w');
+               plot(midX, startY, '+w');
                 m = m+1;
-% % % %                 plot(startX, startY, '+g')
-% % % %                 plot(stopX, stopY, '+r')
+                plot(startX, startY, '+g')
+                plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
