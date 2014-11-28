@@ -1,7 +1,7 @@
 %function [ str ] = readQR( img, centerPoints, bitSize )
 function [ wholeText ] = readQR( img, bitSize, sortedFiducial )
 %OBS!! H?RDKODA INTE CENTERPOINTSEN!
-close all
+%close all
 figure
     imshow(img)
     %den r?ta exmepelbilden ([TL[x,y]; TR[x,y]; BL[x,y]]): centerPoints = [106,197;494,197;106,585];
