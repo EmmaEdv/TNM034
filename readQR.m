@@ -10,7 +10,7 @@ img = imclose(img, se);
 
 %figure
 %imshow(img)
-
+topLeft = [sortedFiducial(1,1)-3.5*bitSize, sortedFiducial(1,2)-3.5*bitSize];
 %crop the image so that only the qr code is shown
 xmin = (sortedFiducial(2,1)-3.5*bitSize);
 ymin = (sortedFiducial(2,2)-3.5*bitSize);

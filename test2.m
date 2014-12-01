@@ -2,9 +2,9 @@ close all
 clear all
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
-%img1 = imread('Images_Training_1/Bygg_1.png');
-img1 = imread('Images_Training_1/Bygg_1a.png');
-% img1 = imread('Images_Training_1/roterad.png');
+img1 = imread('Images_Training_1/Bygg_1.png');
+%img1 = imread('Images_Training_1/Bygg_1a.png');
+%img1 = imread('Images_Training_1/roterad.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
 
@@ -19,14 +19,16 @@ sortedHorizontal = sortrows(horizontal, [2 1]);
 sortedVertical = sortrows(vertical, [1 2]);
 
 %Find the three fiducial marks
-[fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal);
+[fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal, avgBit);
 sortedFiducial = sortrows(fiducial, [1 2]);
 
 figure
 imshow(img1_n)
 hold on
 plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
-figure
+
+
+
 sizeF = size(sortedFiducial,1);
 % %Drawing lines between the three fiducials to get the angle
 % line([sortedFiducial(1,1), sortedFiducial(2,1)], [sortedFiducial(1,2), sortedFiducial(2,2)], 'color', [0.0,0.5,0.0]);
@@ -58,6 +60,7 @@ else
 %     disp(['i want to go counterClockwise: ', hAngle])
 end
 
+nyAvgBit = h/32
 %//////////////////VERT
 % y = fiducial(3,2)- fiducial(1,2);
 % if fiducial(1,1) > fiducial(3,1)
@@ -78,12 +81,39 @@ img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 %sort horizontal by start Y pos, vertical by start X pos
 sortedHorizontal = sortrows(horizontal, [2 1]);
 sortedVertical = sortrows(vertical, [1 2]);
+%1) sortera p? y, begr?nsa, fr?n f?rsta punktens y-v?rde:(sista punktens
+%y-v?rde)/2
+yMin = sortedVertical(1,1);
+yMid = sortedVertical(end,1)/2;
+
+sortedVertical2 = zeros(1,5);
+bottomVertical = zeros(1,5);
+
+[ sortedVertical ] = removeFalsies( sortedVertical, sortedHorizontal );
+
+for i = 1:size(sortedVertical,1)
+    if (sortedVertical(i,1) > yMin) && (sortedVertical(i,1) < yMid)
+        sortedVertical2 = [sortedVertical2; zeros(1,5)];
+        sortedVertical2 = sortedVertical(i,:);
+    elseif (sortedVertical(i,1) > yMid )
+        bottomVertical = [bottomVertical, zeros(1,5)];
+        bottomVertical = sortedVertical(i,:);
+    end
+end
+sortedVertical2 = sortrows(sortedVertical, [5,2]);
+bottomVertical = sortrows(sortedVertical, [2,5]);
+sortedVertical2 = [sortedVertical2; bottomVertical];
+
 
 %Find the three fiducial marks
-[fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal);
+[fiducial] = checkNeighbours2(sortedVertical2, sortedHorizontal, avgBit);
 sortedFiducial = sortrows(fiducial, [1 2]);
 
-imshow(img2_n);
+figure
+imshow(img2_n)
+hold on
+plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
+
 
 
 % imgSize = size(img1_n);
@@ -100,7 +130,10 @@ imshow(img2_n);
 % 
 % xx = fiducial(:,1)*rotacioni(1,1) + fiducial(:,2)*rotacioni(1,2);
 % yy = fiducial(:,1)*rotacioni(2,1) + fiducial(:,2)*rotacioni(2,2);
+[centerPoints] = clustering( img2_n, sortedVertical );
+nyAvgBit = (centerPoints(2,1)-centerPoints(1,1) + centerPoints(3,2)-centerPoints(2,2))/64;
 
 %Read QR-code
-% % [text] = readQR(rotatedImage, avgBit, sortedFiducial);
+ [text] = readQR2(img2_n, nyAvgBit, centerPoints);
+ 
 % disp(text);

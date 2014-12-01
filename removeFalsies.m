@@ -1,4 +1,4 @@
-function [ fiducial ] = checkNeighbours2( sortedVertical, sortedHorizontal, avgBit )
+function [ sortedVertical ] = removeFalsies( sortedVertical, sortedHorizontal )
 
 %Loop through vertical & horizontal...
 %om det ligger en bredvid, l?gg till
@@ -11,12 +11,10 @@ prevX = sortedVertical(1,2);
 nextY = sortedVertical(2,5);
 nextX = sortedVertical(2,2);
 
-fiducial = zeros(1,2);
-%fiducial = zeros(1,3);
 nrFiducials = 0;
 
 nrInRow = 1;
-spann = avgBit*2;
+spann = 5;
 i = 2;
 
     while i < sizeOfV
@@ -37,21 +35,17 @@ i = 2;
                 %cleanVertical = [cleanVertical, zeros(1,7)];
                 nrInRow = nrInRow + 1;
             elseif  nrInRow > 10
-                nrFiducials = nrFiducials + 1;
-                disp(nrFiducials)
-                %Calculate center point
-                medX = (prevX + firstX)/2;
-                medY = (prevY + firstY)/2;
-
-                fiducial = [fiducial; zeros(1,2)];
-                fiducial(nrFiducials, :) = [medX, medY];
+                nrFiducials = nrFiducials + 1
 
                 nrInRow = 0;
                 firstX = sortedVertical(i,2);
                 firstY = sortedVertical(i,5);
             else
-                firstX = sortedVertical(i,2);
-                firstY = sortedVertical(i,5);
+%                 sortedVertical(i,:) = 0;
+%                 
+%                 disp(['removing shit'])
+%                 disp(['i: ', num2str(i), ', xpos: ', num2str(sortedVertical(i,4)), ', midYpos: ', num2str(sortedVertical(i,5))]);
+                %firstY = sortedVertical(i,5);
             end
             
             
@@ -64,21 +58,16 @@ i = 2;
 %             disp([num2str(nrInRow), ', firstY: ', num2str(firstY), ', nextY: ', num2str(nextY), ', prevY: ', num2str(prevY)])
 %             disp([num2str(nrInRow), ', firstX: ', num2str(firstX), ', nextX: ', num2str(nextX), ', prevX: ', num2str(prevX)])
 %             disp(' ');
-            
-            %Calculate center point
-            medX = (prevX + firstX)/2;
-            medY = (prevY + firstY)/2;
-            
-            fiducial = [fiducial; zeros(1,2)];
-            fiducial(nrFiducials, :) = [medX, medY];
-            
-            nrInRow = 0;
+
             firstX = sortedVertical(i,2);
             firstY = sortedVertical(i,5);
         %If the distance > spann and there are no points in a row
         else
-            firstX = sortedVertical(i,2);
-            firstY = sortedVertical(i,5);
+            disp(['removing shit'])
+            disp(['i: ', num2str(i), ', xpos: ', num2str(sortedVertical(i,4)), ', midYpos: ', num2str(sortedVertical(i,5))]);
+            sortedVertical(i,:) = 0;
+            %firstX = sortedVertical(i,2);
+            %firstY = sortedVertical(i,5);
         end
         i=i+1;
         prevX = nextX;
@@ -87,8 +76,8 @@ i = 2;
         nextY = sortedVertical(i,5);
         
     end
-    %remove the empty row in fiducials
-    fiducial(all(fiducial==0,2),:)=[];
+    %remove the empty rows in sortedVertical
+    sortedVertical(all(sortedVertical==0,2),:)=[];
 %     disp(['nr of fiducials: ', num2str(nrFiducials)]);
     
 end

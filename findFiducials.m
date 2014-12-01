@@ -139,8 +139,8 @@ while j < imSize(2)
                 %Draw lines:
               %  line([vertical(n,2), vertical(n,4)], [vertical(n,1), vertical(n,3)], 'color', [0.0,0.5,0.0]);
                 
-                midY = startY + (stopY-startY)/2;
-                vertical(n,5) = midY;
+                midY = (stopY+startY)/2;
+                vertical(n,5) = ceil(midY);
                 plot(startX, midY, '+w');
                 n = n+1;
                 plot(startX, startY, '+g')
@@ -247,11 +247,15 @@ while i < imSize(1)
                 [i,j] = increase(i,j,imSize, verHor);
                 if(img(i,j) == 0)
                     blackCounter = blackCounter + 1;
+%                 avgBit = blackCounter + avgBit;
+%                 avgCounter = avgCounter + 1;
                     stopY = i;
                     stopX = j;
                 else
                     if(blackCounter >= 0.5*whiteCounter && blackCounter <= 1.5*whiteCounter)
                         whiteCounter = 1;
+%                 avgBit = whiteCounter + avgBit;
+%                 avgCounter = avgCounter + 1;
                         status = 6;
                     else
                         [i,j] = increase(prevStart,prevStartY,imSize, verHor);
@@ -270,8 +274,8 @@ while i < imSize(1)
                 %Draw lines:
                % line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)], 'color', [0.0,0.5,0.0]);
                 
-                midX = startX + (stopX-startX)/2;
-                horizontal(m,5) = midX;
+                midX = (stopX+startX)/2;
+                horizontal(m,5) = ceil(midX);
                 plot(midX, startY, '+w');
                 m = m+1;
                 plot(startX, startY, '+g')
