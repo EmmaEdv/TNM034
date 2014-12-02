@@ -131,9 +131,10 @@ plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
 % xx = fiducial(:,1)*rotacioni(1,1) + fiducial(:,2)*rotacioni(1,2);
 % yy = fiducial(:,1)*rotacioni(2,1) + fiducial(:,2)*rotacioni(2,2);
 [centerPoints] = clustering( img2_n, sortedVertical );
-nyAvgBit = (centerPoints(2,1)-centerPoints(1,1) + centerPoints(3,2)-centerPoints(2,2))/64;
+%nyAvgBit = (centerPoints(2,1)-centerPoints(1,1) + centerPoints(3,2)-centerPoints(2,2))/64;
+nyAvgBit = (centerPoints(3,2)-centerPoints(2,2))/34;
 
 %Read QR-code
  [text] = readQR2(img2_n, nyAvgBit, centerPoints);
- 
+ text
 % disp(text);
