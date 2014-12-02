@@ -5,9 +5,9 @@ function [ qrcode ] = readQR2( img, bitSize, sortedFiducial )
 
 %figure
 %imshow(img)
-topLeft = [(sortedFiducial(1,1)-3*bitSize), (sortedFiducial(1,2)-3*bitSize)];
+topLeft = [(min(sortedFiducial(:,1))-3*bitSize), (min(sortedFiducial(:,2))-3*bitSize)]
 qrSize = (bitSize*41);
-bottomRight = [(topLeft(1)+qrSize-bitSize), (topLeft(2)+qrSize-bitSize)];
+bottomRight = [(topLeft(1)+qrSize), (topLeft(2)+qrSize)]
 % disp([num2str(bottomRight(1)), ' ', num2str(bottomRight(2)), ' & ',  num2str(topLeft(1)), ' ', num2str(topLeft(2))]);
 qrcode = '';
 letterNr = 1;
@@ -16,6 +16,7 @@ counter = 0;
 topLeftCounter=0;
 botLeftCounter=0;
 topRightCounter=0;
+alignmentPattern = 0;
 letterArray = zeros(1);
 letterCounter = 0;
 bitz = '';
@@ -24,8 +25,8 @@ bitz = '';
 %disp(['TopLeft: ',num2str(topLeft), ', stepsize: ', num2str(stepSize), ', bottomRight: ',  num2str(bottomRight)]);
 %disp(['f?rsta: ', num2str(img(topLeft(1),topLeft(2)))]);
 %i = x, j = y
-for i = topLeft(1):bitSize:bottomRight(1)
-    for j = topLeft(2):bitSize:bottomRight(2)
+for i = topLeft(1):bitSize:(bottomRight(1)-bitSize)
+    for j = topLeft(2):bitSize:(bottomRight(2)-bitSize)
          %TOP LEFT Fiducial:
             if (j < (topLeft(2)+8*bitSize) && i < (topLeft(1)+8*bitSize))
                 topLeftCounter = topLeftCounter +1;
@@ -33,12 +34,14 @@ for i = topLeft(1):bitSize:bottomRight(1)
                 botLeftCounter = botLeftCounter+1;
             elseif(j < (topLeft(2)+8*bitSize) && i >= (topLeft(1)+qrSize - 8*bitSize))
                 topRightCounter = topRightCounter +1;
+            elseif (j > (bottomRight(2)-10*bitSize) && j <= (bottomRight(2)-5*bitSize) && i > (bottomRight(1)-10*bitSize) && i <= (bottomRight(1)-5*bitSize))
+                alignmentPattern = alignmentPattern +1;
             else
                 counter = counter + 1;
                 
                 %string = strcat(string, num2str(cropImg(i,j)));
-                temp(1,counter) = img(round(j),round(i));
-                bitz = strcat(bitz, num2str(img(round(j),round(i))));
+                temp(1,counter) = img(abs(round(j)),abs(round(i)));
+                bitz = strcat(bitz, num2str(img(abs(round(j)),abs(round(i)))));
                 hold on
                 plot(i, j, '+r');
                 %L?gger in bin?ra siffrorna i array, 8 st/rad 

@@ -292,7 +292,7 @@ while i < imSize(1)
 end
 
 %Average bitLength
-avgBit = avgBit/avgCounter
+avgBit = avgBit/avgCounter;
 
 %Tar bort alla tomma rader (2an betyder att den kollar radvis)
 vertical(all(vertical==0,2),:) = [];

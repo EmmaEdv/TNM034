@@ -4,8 +4,18 @@ function [centerPoints] = clustering( img, vertical )
 imshow(img);
 
 clusterArray = vertical(:,4:5);
-nrOfClusters = 5;
 
+Result = []; 
+for nrOfClusters = 1:20  
+    centroid = kmeans(clusterArray,nrOfClusters,'distance','sqeuclid');  
+    s = silhouette(clusterArray,centroid,'sqeuclid');  
+    Result = [ Result; nrOfClusters mean(s)];  
+end  
+figure    
+plot( Result(:,1),Result(:,2),'r*-.');
+figure
+[M, I] = max(Result(:,2))
+nrOfClusters = Result(I,1)
     opts = statset('Display','final');
     [idx,C, sumd] = kmeans(clusterArray, nrOfClusters,'Distance','sqeuclidean', 'Replicates', 5, 'Options', opts);
 
@@ -22,18 +32,19 @@ nrOfClusters = 5;
     hold off
 
 centerPoints = zeros(3,2);
-felMarg = 300;
+felMarg = 500;
 temp = max(sumd);
 %centerPoints(1,:) = sumd(1);
 n = 0;
 for i = 1:nrOfClusters
-    if sumd(i) < (temp + felMarg) && sumd(i) > (temp - felMarg)
+    if sumd(i) < (temp + felMarg) && sumd(i) > (temp - felMarg) && i<nrOfClusters
         n = n+1;
         centerPoints(n,:) = C(i,:);
     end
 end
-
-centerPoints = sortrows(centerPoints, [2,1]);
+sumd
+C
+%centerPoints(2:3, :) = sortrows(centerPoints(2:3, :), [2 1])
     
 end
 

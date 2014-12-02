@@ -38,7 +38,6 @@ i = 2;
                 nrInRow = nrInRow + 1;
             elseif  nrInRow > 10
                 nrFiducials = nrFiducials + 1;
-                disp(nrFiducials)
                 %Calculate center point
                 medX = (prevX + firstX)/2;
                 medY = (prevY + firstY)/2;
