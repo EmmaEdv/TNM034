@@ -30,11 +30,11 @@ for i = topLeft(1):bitSize:(bottomRight(1)-bitSize)
          %TOP LEFT Fiducial:
             if (j < (topLeft(2)+8*bitSize) && i < (topLeft(1)+8*bitSize))
                 topLeftCounter = topLeftCounter +1;
-            elseif(j >= (topLeft(2)+qrSize - 8*bitSize) && i < (topLeft(1)+8*bitSize))
+            elseif(j >= (topLeft(2) + 33*bitSize) && i < (topLeft(1)+8*bitSize))
                 botLeftCounter = botLeftCounter+1;
-            elseif(j < (topLeft(2)+8*bitSize) && i >= (topLeft(1)+qrSize - 8*bitSize))
+            elseif(j < (topLeft(2)+8*bitSize) && i >= (topLeft(1)+33*bitSize))
                 topRightCounter = topRightCounter +1;
-            elseif (j > (bottomRight(2)-10*bitSize) && j <= (bottomRight(2)-5*bitSize) && i > (bottomRight(1)-10*bitSize) && i <= (bottomRight(1)-5*bitSize))
+            elseif (j > (topLeft(2)+31*bitSize) && j <= (topLeft(2)+36*bitSize) && i > (topLeft(1)+31*bitSize) && i <= (topLeft(1)+36*bitSize))
                 alignmentPattern = alignmentPattern +1;
             else
                 counter = counter + 1;

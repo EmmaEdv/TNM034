@@ -2,7 +2,7 @@ close all
 clear all
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
-img1 = imread('Images_Training_1/Bygg_1b.png');
+img1 = imread('Images_Training_1/Bygg_1d.png');
 %img1 = imread('Images_Training_1/Bygg_1a.png');
 %img1 = imread('Images_Training_1/roterad.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
