@@ -2,7 +2,7 @@ close all
 clear all
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
-img1 = imread('Images_Training_1/Bygg_1.png');
+img1 = imread('Images_Training_1/Bygg_1b.png');
 %img1 = imread('Images_Training_1/Bygg_1a.png');
 %img1 = imread('Images_Training_1/roterad.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
@@ -22,11 +22,11 @@ sortedVertical = sortrows(vertical, [1 2]);
 [fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal, avgBit);
 sortedFiducial = sortrows(fiducial, [1 2]);
 
-figure
-imshow(img1_n)
-hold on
-plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
-
+%%Figure showing the bw image with FIPs 
+% figure
+% imshow(img1_n)
+% hold on
+% plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
 
 
 sizeF = size(sortedFiducial,1);
@@ -90,7 +90,8 @@ sortedVertical2 = zeros(1,5);
 bottomVertical = zeros(1,5);
 
 [ sortedVertical ] = removeFalsies( sortedVertical, sortedHorizontal );
-
+%sorting the centerpoints for FIPs such that the top 2 ?verst i arrayen och
+%nedre sist i arrayen....
 for i = 1:size(sortedVertical,1)
     if (sortedVertical(i,1) > yMin) && (sortedVertical(i,1) < yMid)
         sortedVertical2 = [sortedVertical2; zeros(1,5)];
@@ -109,28 +110,15 @@ sortedVertical2 = [sortedVertical2; bottomVertical];
 [fiducial] = checkNeighbours2(sortedVertical2, sortedHorizontal, avgBit);
 sortedFiducial = sortrows(fiducial, [1 2]);
 
-figure
-imshow(img2_n)
-hold on
-plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
+%%Figure showing the rotated image with FIPs
+% figure
+% imshow(img2_n)
+% hold on
+% plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
 
 
-
-% imgSize = size(img1_n);
-% a = [1,0,imgSize(1)/2; 0,1,imgSize(2)/2; 0,0,1];
-% b = [radtodeg(cos(hAngle)),radtodeg(-counterClock*sin(hAngle)),0; 
-%     radtodeg(counterClock*sin(hAngle)),radtodeg(cos(hAngle)),0; 0,0,1];
-% c = [1,0,-imgSize(1)/2; 1,1,-imgSize(2)/2; 0,0,1];
-% 
-% M = c'*b*a';
-% sortedFiducial = M*sortedFiducial;
-% 
-% 
-% rotacioni = [radtodeg(cos(hAngle)) radtodeg(-counterClock*sin(hAngle)); radtodeg(counterClock*sin(hAngle)) radtodeg(cos(hAngle))];
-% 
-% xx = fiducial(:,1)*rotacioni(1,1) + fiducial(:,2)*rotacioni(1,2);
-% yy = fiducial(:,1)*rotacioni(2,1) + fiducial(:,2)*rotacioni(2,2);
-[centerPoints] = clustering( img2_n, sortedVertical );
+%[centerPoints] = clustering( img2_n, sortedVertical );
+[ centerPoints ] = medianFilter( img2_n, sortedHorizontal, sortedVertical)
 %nyAvgBit = (centerPoints(2,1)-centerPoints(1,1) + centerPoints(3,2)-centerPoints(2,2))/64;
 nyAvgBit = (max(centerPoints(:,2))-min(centerPoints(:,2)))/34;
 %Read QR-code

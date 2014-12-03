@@ -19,8 +19,10 @@ imSize = size(img);
 % 4: Same as 2
 % 5: Same as 1
 % 6: extra case.. 
-figure
-imshow(img)
+
+%%Figure showing the bw image
+% figure
+% imshow(img)
 hold on
 vertical = zeros(1, 5);
 n = 1;
@@ -133,18 +135,20 @@ while j < imSize(2)
                 avgBit = avgBit + blackCounter;
                 avgCounter = avgCounter + 1;
                 whiteCounter = 1;
-                hold on
+                
                 vertical = [vertical; zeros(1,5)];
                 vertical(n,1:4) = [startY, startX, stopY, stopX];
                 %Draw lines:
               %  line([vertical(n,2), vertical(n,4)], [vertical(n,1), vertical(n,3)], 'color', [0.0,0.5,0.0]);
-                
+                hold on
                 midY = (stopY+startY)/2;
-                vertical(n,5) = ceil(midY);
-                plot(startX, midY, '+w');
-                n = n+1;
-                plot(startX, startY, '+g')
-                plot(stopX, stopY, '+r')
+                vertical(n,5) = ceil(midY);                
+                 n = n+1;
+                 
+                %Plotting centerpoints of FIPS
+%                 plot(startX, midY, '+w');
+%                 plot(startX, startY, '+g')
+%                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -268,7 +272,7 @@ while i < imSize(1)
                 whiteCounter = 1;
                 avgBit = blackCounter + avgBit;
                 avgCounter = avgCounter + 1;
-                hold on
+                
                 horizontal = [horizontal; zeros(1,5)];
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
                 %Draw lines:
@@ -276,10 +280,14 @@ while i < imSize(1)
                 
                 midX = (stopX+startX)/2;
                 horizontal(m,5) = ceil(midX);
-                plot(midX, startY, '+w');
                 m = m+1;
-                plot(startX, startY, '+g')
-                plot(stopX, stopY, '+r')
+                
+                %Plotting centerpoints of FIPs
+%                 hold on
+%                 plot(midX, startY, '+w');
+%                 
+%                 plot(startX, startY, '+g')
+%                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;

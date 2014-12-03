@@ -1,20 +1,21 @@
 function [centerPoints] = clustering( img, vertical )
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
-imshow(img);
 
 clusterArray = vertical(:,4:5);
-
 Result = []; 
+
 for nrOfClusters = 1:20  
-    centroid = kmeans(clusterArray,nrOfClusters,'distance','sqeuclid');  
-    s = silhouette(clusterArray,centroid,'sqeuclid');  
+    centroid = kmeans(clusterArray,nrOfClusters,'distance','sqeuclidean');  
+    s = silhouette(clusterArray,centroid,'sqEuclidean'); 
     Result = [ Result; nrOfClusters mean(s)];  
-end  
-figure    
-plot( Result(:,1),Result(:,2),'r*-.');
+end
+Result
+%% Figure showing the 'elbow diagram' of the silhouette
+% figure    
+% plot( Result(:,1),Result(:,2),'r*-.');
 figure
-[M, I] = max(Result(:,2))
+[M, I] = max(Result(:,2));
 nrOfClusters = Result(I,1)
     opts = statset('Display','final');
     [idx,C, sumd] = kmeans(clusterArray, nrOfClusters,'Distance','sqeuclidean', 'Replicates', 5, 'Options', opts);
@@ -32,7 +33,8 @@ nrOfClusters = Result(I,1)
     hold off
 
 centerPoints = zeros(3,2);
-felMarg = 500;
+imSize = size(img);
+felMarg = imSize(1)*imSize(2)*0.000625
 temp = max(sumd);
 %centerPoints(1,:) = sumd(1);
 n = 0;
@@ -42,8 +44,8 @@ for i = 1:nrOfClusters
         centerPoints(n,:) = C(i,:);
     end
 end
-sumd
-C
+sumd;
+C;
 %centerPoints(2:3, :) = sortrows(centerPoints(2:3, :), [2 1])
     
 end

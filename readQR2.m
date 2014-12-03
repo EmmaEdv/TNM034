@@ -3,8 +3,8 @@ function [ qrcode ] = readQR2( img, bitSize, sortedFiducial )
 %close all
 
 
-%figure
-%imshow(img)
+figure
+imshow(img)
 topLeft = [(min(sortedFiducial(:,1))-3*bitSize), (min(sortedFiducial(:,2))-3*bitSize)]
 qrSize = (bitSize*41);
 bottomRight = [(topLeft(1)+qrSize), (topLeft(2)+qrSize)]
@@ -85,8 +85,5 @@ for i = topLeft(1):bitSize:(bottomRight(1)-bitSize)
     end
 end
 
-
-    
-wholeText = 'hej';
 
 end
