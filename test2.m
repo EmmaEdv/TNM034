@@ -2,14 +2,18 @@ close all
 clear all
 
 %img1 = imread('D:\Skola\TNM034\Images_Training_1\Bygg_1.png');%
-img1 = imread('Images_Training_1/Bygg_1d.png');
+img1 = imread('Images_Training_1/Bygg_1c.png');
 %img1 = imread('Images_Training_1/Bygg_1a.png');
 %img1 = imread('Images_Training_1/roterad.png');
 %img1 = imread('Images_Training_2/Hus_1a.png');
 %img1 = imread('Images_Training_5/Husannons_full.png');
 
 %Normalize
+img1 = medfilt2(img1,[3 3]);
 img1_n = im2bw(img1, graythresh(img1));
+
+figure
+imshow(img1_n)
 
 %Find possible fiducial marks (1:1:1:3:1:1:1)
 disp('looking for fiducial marks')
@@ -22,7 +26,7 @@ sortedVertical = sortrows(vertical, [1 2]);
 
 %Find the three fiducial marks
 disp('check neighbours')
-[fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal, avgBit);
+[fiducial] = medianFilter(img1_n, sortedHorizontal, sortedVertical);
 disp('done in function')
 sortedFiducial = sortrows(fiducial, [1 2]);
 
@@ -76,13 +80,15 @@ nyAvgBit = h/32;
 % h = sqrt( x ^2 + y^2);
 % vertAngle = radtodeg(acos(y/h));
 
-% avgAngle = (vertAngle + horAngle)/2;  
+% avgAngle = (vertAngle + hAngle)/2;  
 rotatedImage = imrotate(img1, hAngle, 'bicubic');
 disp('done rotating')
 
 disp('find fiducials again')
 img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 
+figure 
+imshow(img2_n)
 %Hitta fippar igen
 [horizontal, vertical, avgBit] = findFiducials(img2_n);
 disp('found again')
@@ -97,7 +103,7 @@ yMid = sortedVertical(end,1)/2;
 sortedVertical2 = zeros(1,5);
 bottomVertical = zeros(1,5);
 disp('remove falsies')
-[ sortedVertical ] = removeFalsies( sortedVertical, sortedHorizontal );
+%[ sortedVertical ] = removeFalsies( sortedVertical, sortedHorizontal );
 disp('done in function')
 %sorting the centerpoints for FIPs such that the top 2 ?verst i arrayen och
 %nedre sist i arrayen....

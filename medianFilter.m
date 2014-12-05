@@ -17,18 +17,24 @@ for i = 1:vsize(1)
     blackImg(vertical(i,5), vertical(i,4)) = 1;
 end
 
-median = medfilt2(blackImg);
-%figure
-%imshow(median)
-
 se = strel('diamond', 1);
-eroded = imerode(median,se);
-[y,x] = find(eroded);
-%%Figure showing the centerpoints
-% figure
-% imshow(eroded);
+blackImg = imclose(blackImg, se);
 
-centerPoints = sortrows([x,y],[2,1]);
+median = medfilt2(blackImg);
+figure
+imshow(median)
+label = bwlabel(median, 8);
+img = regionprops(label, 'all');
+centroids = cat(1, img.Centroid);
+area = cat(1, img.Area)
+labels = [centroids, area];
+labels = sortrows(labels,-3)
+
+% imshow(median);
+% hold on
+% plot(centroids(:,1), centroids(:,2), '*r');
+
+centerPoints = sortrows([labels(1:3,1),labels(1:3,2)],[2,1]);
 
 
 end
