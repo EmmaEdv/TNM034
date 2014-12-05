@@ -121,19 +121,11 @@ sortedVertical2 = sortrows(sortedVertical, [5,2]);
 bottomVertical = sortrows(sortedVertical, [2,5]);
 sortedVertical2 = [sortedVertical2; bottomVertical];
 
-
-%Find the three fiducial marks
-disp('check neighbours again')
-[fiducial] = checkNeighbours2(sortedVertical2, sortedHorizontal, avgBit);
-disp('done checking')
-sortedFiducial = sortrows(fiducial, [1 2]);
-
 %%Figure showing the rotated image with FIPs
 % figure
 % imshow(img2_n)
 % hold on
 % plot(sortedFiducial(:,1), sortedFiducial(:,2), 'g*');
-
 
 %[centerPoints] = clustering( img2_n, sortedVertical );
 disp('median filter the fips')

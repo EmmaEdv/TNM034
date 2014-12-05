@@ -21,20 +21,18 @@ se = strel('diamond', 1);
 blackImg = imclose(blackImg, se);
 
 median = medfilt2(blackImg);
-figure
-imshow(median)
 label = bwlabel(median, 8);
 img = regionprops(label, 'all');
 centroids = cat(1, img.Centroid);
 area = cat(1, img.Area)
-labels = [centroids, area];
-labels = sortrows(labels,-3)
+centerAreas = [centroids, area];
+centerAreas = sortrowscenterAreaslabels,-3)
 
 % imshow(median);
 % hold on
 % plot(centroids(:,1), centroids(:,2), '*r');
 
-centerPoints = sortrows([labels(1:3,1),labels(1:3,2)],[2,1]);
+centerPoints = sortrows([centerAreas(1:3,1),centerAreas(1:3,2)],[2,1]);
 
 
 end
