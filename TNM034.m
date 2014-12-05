@@ -20,6 +20,7 @@ disp('check neighbours')
 [sortedFiducial] = medianFilter(img1_n, sortedHorizontal, sortedVertical);
 disp('done in function')
 
+%Rotate the image by fiducials positions
 disp('rotating')
 rotatedImage = rotateImage(sortedFiducial, img1);
 disp('done rotating')
@@ -33,6 +34,7 @@ img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 [sortedHorizontal, sortedVertical] = findFiducials(img2_n);
 disp('found again')
 
+%Find centerpoints of fiducials
 disp('median filter the fips')
 [ centerPoints ] = medianFilter( img2_n, sortedHorizontal, sortedVertical);
 disp('done')
