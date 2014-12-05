@@ -30,12 +30,8 @@ rotatedImage = medfilt2(rotatedImage,[3 3]);
 img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 
 %Find FIPs in rotated image
-[horizontal, vertical] = findFiducials(img2_n);
+[sortedHorizontal, sortedVertical] = findFiducials(img2_n);
 disp('found again')
-
-%sort horizontal by start Y pos, vertical by start X pos
-sortedHorizontal = sortrows(horizontal, [2 1]);
-sortedVertical = sortrows(vertical, [1 2]);
 
 disp('median filter the fips')
 [ centerPoints ] = medianFilter( img2_n, sortedHorizontal, sortedVertical);
@@ -46,7 +42,6 @@ nyAvgBit = (max(centerPoints(:,2))-min(centerPoints(:,2)))/34;
 disp('read QRcode')
 [text] = readQR2(img2_n, nyAvgBit, centerPoints);
 strout = text;
-% disp(text);
 
 end
 

@@ -20,10 +20,6 @@ imSize = size(img);
 % 5: Same as 1
 % 6: extra case.. 
 
-%%Figure showing the bw image
-% figure
-% imshow(img)
-% hold on
 vertical = zeros(1, 5);
 n = 1;
 status = -1;
@@ -134,17 +130,10 @@ while j < imSize(2)
                 
                 vertical = [vertical; zeros(1,5)];
                 vertical(n,1:4) = [startY, startX, stopY, stopX];
-                %Draw lines:
-              %  line([vertical(n,2), vertical(n,4)], [vertical(n,1), vertical(n,3)], 'color', [0.0,0.5,0.0]);
-%                 hold on
+
                 midY = (stopY+startY)/2;
                 vertical(n,5) = ceil(midY);                
                  n = n+1;
-                 
-                %Plotting centerpoints of FIPS
-%                 plot(startX, midY, '+w');
-%                 plot(startX, startY, '+g')
-%                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -267,19 +256,10 @@ while i < imSize(1)
                 
                 horizontal = [horizontal; zeros(1,5)];
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
-                %Draw lines:
-               % line([horizontal(m,2), horizontal(m,4)], [horizontal(m,1), horizontal(m,3)], 'color', [0.0,0.5,0.0]);
                 
                 midX = (stopX+startX)/2;
                 horizontal(m,5) = ceil(midX);
                 m = m+1;
-                
-                %Plotting centerpoints of FIPs
-%                 hold on
-%                 plot(midX, startY, '+w');
-%                 
-%                 plot(startX, startY, '+g')
-%                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -297,7 +277,6 @@ horizontal(all(horizontal==0,2),:) = [];
 
 sortedHorizontal = sortrows(horizontal, [2 1]);
 sortedVertical = sortrows(vertical, [1 2]);
-
 
 end
 

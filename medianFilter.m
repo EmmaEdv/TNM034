@@ -4,9 +4,6 @@ function [ centerPoints ] = medianFilter( img, horizontal, vertical)
 imgSize = size(img);
 blackImg = zeros(imgSize(1), imgSize(2));
 
-%blackImg(horizontal(:,3),horizontal(:,5)) = 1;
-%blackImg(vertical(:,5),vertical(:,4)) = 1;
-
 hsize = size(horizontal);
 vsize = size(vertical);
 
@@ -27,10 +24,6 @@ centroids = cat(1, img.Centroid);
 area = cat(1, img.Area)
 labels = [centroids, area];
 labels = sortrows(labels,-3)
-
-% imshow(median);
-% hold on
-% plot(centroids(:,1), centroids(:,2), '*r');
 
 centerPoints = sortrows([labels(1:3,1),labels(1:3,2)],[1,2]);
 
