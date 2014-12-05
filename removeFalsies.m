@@ -35,7 +35,7 @@ i = 2;
                 %cleanVertical = [cleanVertical, zeros(1,7)];
                 nrInRow = nrInRow + 1;
             elseif  nrInRow > 10
-                nrFiducials = nrFiducials + 1
+                nrFiducials = nrFiducials + 1;
 
                 nrInRow = 0;
                 firstX = sortedVertical(i,2);
@@ -63,8 +63,8 @@ i = 2;
             firstY = sortedVertical(i,5);
         %If the distance > spann and there are no points in a row
         else
-            disp(['removing shit'])
-            disp(['i: ', num2str(i), ', xpos: ', num2str(sortedVertical(i,4)), ', midYpos: ', num2str(sortedVertical(i,5))]);
+%             disp(['removing shit'])
+%             disp(['i: ', num2str(i), ', xpos: ', num2str(sortedVertical(i,4)), ', midYpos: ', num2str(sortedVertical(i,5))]);
             sortedVertical(i,:) = 0;
             %firstX = sortedVertical(i,2);
             %firstY = sortedVertical(i,5);

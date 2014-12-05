@@ -12,14 +12,18 @@ img1 = imread('Images_Training_1/Bygg_1d.png');
 img1_n = im2bw(img1, graythresh(img1));
 
 %Find possible fiducial marks (1:1:1:3:1:1:1)
+disp('looking for fiducial marks')
 [horizontal, vertical, avgBit] = findFiducials(img1_n);
+disp('done in function')
 
 %sort horizontal by start Y pos, vertical by start X pos
 sortedHorizontal = sortrows(horizontal, [2 1]);
 sortedVertical = sortrows(vertical, [1 2]);
 
 %Find the three fiducial marks
+disp('check neighbours')
 [fiducial] = checkNeighbours2(sortedVertical, sortedHorizontal, avgBit);
+disp('done in function')
 sortedFiducial = sortrows(fiducial, [1 2]);
 
 %%Figure showing the bw image with FIPs 
@@ -39,6 +43,7 @@ sizeF = size(sortedFiducial,1);
 %Calculate angle for horizontal line
 %counterClock = -1 counter clockwise rotation, = 1 clockwise rot.
 
+disp('rotating')
 %Rotate image counter clockwise
 if sortedFiducial(1,2) < sortedFiducial(2,2)
     xH = sortedFiducial(3,1)- sortedFiducial(1,1);
@@ -60,7 +65,7 @@ else
 %     disp(['i want to go counterClockwise: ', hAngle])
 end
 
-nyAvgBit = h/32
+nyAvgBit = h/32;
 %//////////////////VERT
 % y = fiducial(3,2)- fiducial(1,2);
 % if fiducial(1,1) > fiducial(3,1)
@@ -73,11 +78,14 @@ nyAvgBit = h/32
 
 % avgAngle = (vertAngle + horAngle)/2;  
 rotatedImage = imrotate(img1, hAngle, 'bicubic');
+disp('done rotating')
+
+disp('find fiducials again')
 img2_n = im2bw(rotatedImage, graythresh(rotatedImage));
 
 %Hitta fippar igen
 [horizontal, vertical, avgBit] = findFiducials(img2_n);
-
+disp('found again')
 %sort horizontal by start Y pos, vertical by start X pos
 sortedHorizontal = sortrows(horizontal, [2 1]);
 sortedVertical = sortrows(vertical, [1 2]);
@@ -88,10 +96,12 @@ yMid = sortedVertical(end,1)/2;
 
 sortedVertical2 = zeros(1,5);
 bottomVertical = zeros(1,5);
-
+disp('remove falsies')
 [ sortedVertical ] = removeFalsies( sortedVertical, sortedHorizontal );
+disp('done in function')
 %sorting the centerpoints for FIPs such that the top 2 ?verst i arrayen och
 %nedre sist i arrayen....
+disp('sort the sortedVertical correctly')
 for i = 1:size(sortedVertical,1)
     if (sortedVertical(i,1) > yMin) && (sortedVertical(i,1) < yMid)
         sortedVertical2 = [sortedVertical2; zeros(1,5)];
@@ -107,7 +117,9 @@ sortedVertical2 = [sortedVertical2; bottomVertical];
 
 
 %Find the three fiducial marks
+disp('check neighbours again')
 [fiducial] = checkNeighbours2(sortedVertical2, sortedHorizontal, avgBit);
+disp('done checking')
 sortedFiducial = sortrows(fiducial, [1 2]);
 
 %%Figure showing the rotated image with FIPs
@@ -118,10 +130,13 @@ sortedFiducial = sortrows(fiducial, [1 2]);
 
 
 %[centerPoints] = clustering( img2_n, sortedVertical );
-[ centerPoints ] = medianFilter( img2_n, sortedHorizontal, sortedVertical)
+disp('median filter the fips')
+[ centerPoints ] = medianFilter( img2_n, sortedHorizontal, sortedVertical);
+disp('done')
 %nyAvgBit = (centerPoints(2,1)-centerPoints(1,1) + centerPoints(3,2)-centerPoints(2,2))/64;
 nyAvgBit = (max(centerPoints(:,2))-min(centerPoints(:,2)))/34;
 %Read QR-code
+disp('read QRcode')
  [text] = readQR2(img2_n, nyAvgBit, centerPoints);
  text
 % disp(text);

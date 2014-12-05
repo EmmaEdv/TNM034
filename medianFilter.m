@@ -7,8 +7,8 @@ blackImg = zeros(imgSize(1), imgSize(2));
 %blackImg(horizontal(:,3),horizontal(:,5)) = 1;
 %blackImg(vertical(:,5),vertical(:,4)) = 1;
 
-hsize = size(horizontal)
-vsize = size(vertical)
+hsize = size(horizontal);
+vsize = size(vertical);
 
 for i = 1:hsize(1)
     blackImg(horizontal(i,3), horizontal(i,5)) = 1;
@@ -28,7 +28,7 @@ eroded = imerode(median,se);
 % figure
 % imshow(eroded);
 
-centerPoints = sortrows([x,y],[2,1])
+centerPoints = sortrows([x,y],[2,1]);
 
 
 end
