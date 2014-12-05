@@ -1,4 +1,4 @@
-function [ horizontal, vertical, avgBit ] = findFiducials( img )
+function [ sortedHorizontal, sortedVertical ] = findFiducials( img )
 % findFiducials: Find areas in image that has the characteristics of a
 %fiducial mark: w:b:w:b:b:b:w:b:w.
 % input argument: img is a black/white image
@@ -6,7 +6,7 @@ function [ horizontal, vertical, avgBit ] = findFiducials( img )
 % direction
 % output: vertical: array holding the possible fiducials in vertical
 % direction
-% output: avgBit: average size of a bit
+% output: 
 
 imSize = size(img);
 
@@ -29,10 +29,7 @@ n = 1;
 status = -1;
 blackCounter = 0;
 whiteCounter = 0;
-%want to save the average bit length for readQR
-avgBit = 0; 
-%also divide by the number of times we add length
-avgCounter = 0;
+
 centerCounter = 0;
 startX = 0;
 startY = 0;
@@ -132,8 +129,7 @@ while j < imSize(2)
             case 6
                 [i,j] = increase(i,j,imSize,verHor);
                 status = -1;
-                avgBit = avgBit + blackCounter;
-                avgCounter = avgCounter + 1;
+                
                 whiteCounter = 1;
                 
                 vertical = [vertical; zeros(1,5)];
@@ -251,15 +247,13 @@ while i < imSize(1)
                 [i,j] = increase(i,j,imSize, verHor);
                 if(img(i,j) == 0)
                     blackCounter = blackCounter + 1;
-%                 avgBit = blackCounter + avgBit;
-%                 avgCounter = avgCounter + 1;
+
                     stopY = i;
                     stopX = j;
                 else
                     if(blackCounter >= 0.5*whiteCounter && blackCounter <= 1.5*whiteCounter)
                         whiteCounter = 1;
-%                 avgBit = whiteCounter + avgBit;
-%                 avgCounter = avgCounter + 1;
+
                         status = 6;
                     else
                         [i,j] = increase(prevStart,prevStartY,imSize, verHor);
@@ -270,8 +264,6 @@ while i < imSize(1)
                 [i,j] = increase(i,j,imSize, verHor);
                 status = -1;
                 whiteCounter = 1;
-                avgBit = blackCounter + avgBit;
-                avgCounter = avgCounter + 1;
                 
                 horizontal = [horizontal; zeros(1,5)];
                 horizontal(m,1:4) = [startY, startX, stopY, stopX];
@@ -299,12 +291,12 @@ while i < imSize(1)
     %i = 0;
 end
 
-%Average bitLength
-avgBit = avgBit/avgCounter;
-
 %Tar bort alla tomma rader (2an betyder att den kollar radvis)
 vertical(all(vertical==0,2),:) = [];
 horizontal(all(horizontal==0,2),:) = [];
+
+sortedHorizontal = sortrows(horizontal, [2 1]);
+sortedVertical = sortrows(vertical, [1 2]);
 
 
 end

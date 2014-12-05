@@ -25,14 +25,14 @@ label = bwlabel(median, 8);
 img = regionprops(label, 'all');
 centroids = cat(1, img.Centroid);
 area = cat(1, img.Area)
-centerAreas = [centroids, area];
-centerAreas = sortrowscenterAreaslabels,-3)
+labels = [centroids, area];
+labels = sortrows(labels,-3)
 
 % imshow(median);
 % hold on
 % plot(centroids(:,1), centroids(:,2), '*r');
 
-centerPoints = sortrows([centerAreas(1:3,1),centerAreas(1:3,2)],[2,1]);
+centerPoints = sortrows([labels(1:3,1),labels(1:3,2)],[1,2]);
 
 
 end
