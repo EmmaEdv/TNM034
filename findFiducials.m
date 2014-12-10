@@ -33,6 +33,7 @@ whiteCounter = 0;
 centerCounter = 0;
 startX = 0;
 startY = 0;
+
 %Vertical scanning
 %Loop through image to enter repetitions of colors...
 i = 1;
@@ -118,7 +119,7 @@ while j < imSize(2)
                     stopY = i;
                     stopX = j;
                 else
-                    if(blackCounter >= 0.5*whiteCounter && blackCounter <= 1.5*whiteCounter)
+                    if(blackCounter >= 0.5*whiteCounter && blackCounter <= 1.5*whiteCounter && stopY ~= 0)
                         whiteCounter = 1;
                         status = 6;
                     else
@@ -162,6 +163,8 @@ whiteCounter = 0;
 status = 0;
 startX = 0;
 startY = 0;
+stopX = 0;
+stopY = 0;
 i = 1;
 j = 1;
 prevStart = 1;
@@ -250,7 +253,7 @@ while i < imSize(1)
                     stopY = i;
                     stopX = j;
                 else
-                    if(blackCounter >= 0.5*whiteCounter && blackCounter <= 1.5*whiteCounter)
+                    if(blackCounter >= 0.5*whiteCounter && blackCounter <= 1.5*whiteCounter && stopX ~= 0)
                         whiteCounter = 1;
 
                         status = 6;
