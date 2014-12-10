@@ -1,5 +1,5 @@
 function [ centerPoints ] = medianFilter( img, horizontal, vertical)
-%UNTITLED Summary of this function goes here
+%medianFilter: Find centerpoints of found fiducial marks
 %   Detailed explanation goes here
 imgSize = size(img);
 blackImg = zeros(imgSize(1), imgSize(2));
@@ -21,9 +21,9 @@ median = medfilt2(blackImg);
 label = bwlabel(median, 8);
 img = regionprops(label, 'all');
 centroids = cat(1, img.Centroid);
-area = cat(1, img.Area)
+area = cat(1, img.Area);
 labels = [centroids, area];
-labels = sortrows(labels,-3)
+labels = sortrows(labels,-3);
 
 centerPoints = sortrows([labels(1:3,1),labels(1:3,2)],[1,2]);
 

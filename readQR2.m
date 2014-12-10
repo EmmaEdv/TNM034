@@ -1,8 +1,12 @@
-function [ qrcode ] = readQR2( img, bitSize, sortedFiducial )
+function [ qrcode ] = readQR2( img, bitSizeX, bitSizeY, sortedFiducial )
+% 
+% figure
+% imshow(img)
 
-topLeft = [(min(sortedFiducial(:,1))-3*bitSize), (min(sortedFiducial(:,2))-3*bitSize)]
-qrSize = (bitSize*41);
-bottomRight = [(topLeft(1)+qrSize), (topLeft(2)+qrSize)]
+topLeft = [(min(sortedFiducial(:,1))-3*bitSizeX), (min(sortedFiducial(:,2))-3*bitSizeY)];
+qrSizeX = (bitSizeX*41);
+qrSizeY = (bitSizeY*41);
+bottomRight = [(topLeft(1)+qrSizeX), (topLeft(2)+qrSizeY)];
 
 qrcode = '';
 letterNr = 1;
@@ -17,16 +21,16 @@ letterCounter = 0;
 bitz = '';
 
     %i = x, j = y
-    for i = topLeft(1):bitSize:(bottomRight(1)-bitSize)
-        for j = topLeft(2):bitSize:(bottomRight(2)-bitSize)
+    for i = topLeft(1):bitSizeX:(bottomRight(1)-bitSizeX)
+        for j = topLeft(2):bitSizeY:(bottomRight(2)-bitSizeY)
             %Fiducials:
-            if (j < (topLeft(2)+8*bitSize) && i < (topLeft(1)+8*bitSize))
+            if (j < (topLeft(2)+8*bitSizeY) && i < (topLeft(1)+8*bitSizeX))
                 topLeftCounter = topLeftCounter +1;
-            elseif(j >= (topLeft(2) + 33*bitSize) && i < (topLeft(1)+8*bitSize))
+            elseif(j >= (topLeft(2) + 33*bitSizeY) && i < (topLeft(1)+8*bitSizeX))
                 botLeftCounter = botLeftCounter+1;
-            elseif(j < (topLeft(2)+8*bitSize) && i >= (topLeft(1)+33*bitSize))
+            elseif(j < (topLeft(2)+8*bitSizeY) && i >= (topLeft(1)+33*bitSizeX))
                 topRightCounter = topRightCounter +1;
-            elseif (j > (topLeft(2)+31*bitSize) && j <= (topLeft(2)+36*bitSize) && i > (topLeft(1)+31*bitSize) && i <= (topLeft(1)+36*bitSize))
+            elseif (j > (topLeft(2)+31*bitSizeY) && j <= (topLeft(2)+36*bitSizeY) && i > (topLeft(1)+31*bitSizeX) && i <= (topLeft(1)+36*bitSizeX))
                 alignmentPattern = alignmentPattern +1;
             %No fiducials:    
             else
@@ -34,8 +38,8 @@ bitz = '';
                 
                 temp(1,counter) = img(abs(round(j)),abs(round(i)));
                 bitz = strcat(bitz, num2str(img(abs(round(j)),abs(round(i)))));
-                hold on
-                plot(i, j, '+r');
+%                 hold on
+%                 plot(i, j, '+r');
                 %Read 8 bits at a time
                 if counter == 8
                     letterCounter = letterCounter + 1;

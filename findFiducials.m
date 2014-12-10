@@ -10,6 +10,10 @@ function [ sortedHorizontal, sortedVertical ] = findFiducials( img )
 
 imSize = size(img);
 
+%%Figure showing the bw image
+% figure
+% imshow(img)
+
 % status explanation:
 % -1: White border around QR-code
 % 0: White border around QR-code
@@ -133,7 +137,13 @@ while j < imSize(2)
 
                 midY = (stopY+startY)/2;
                 vertical(n,5) = ceil(midY);                
-                 n = n+1;
+                n = n+1;
+                 
+%                 hold on
+%                 plot(startX, midY, '+w');
+%                 plot(startX, startY, '+g')
+%                 plot(stopX, stopY, '+r')
+
         end
         if(i == imSize(1) && j == imSize(2))
             break;
@@ -260,6 +270,11 @@ while i < imSize(1)
                 midX = (stopX+startX)/2;
                 horizontal(m,5) = ceil(midX);
                 m = m+1;
+                
+%                 hold on
+%                 plot(midX, startY, '+w');
+%                 plot(startX, startY, '+g')
+%                 plot(stopX, stopY, '+r')
         end
         if(i == imSize(1) && j == imSize(2))
             break;
